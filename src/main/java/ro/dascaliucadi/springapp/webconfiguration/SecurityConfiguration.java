@@ -5,13 +5,13 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 
-//@Configuration
-//@EnableWebSecurity
-//public class SecurityConfiguration extends WebSecurityConfigurerAdapter{
-//  	
-//  	@Override
-//  	protected void configure(HttpSecurity http) throws Exception {
-//  		
+@Configuration
+@EnableWebSecurity
+public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
+
+	@Override
+	protected void configure(HttpSecurity http) throws Exception {
+
 //  	    http
 //  	    .authorizeRequests()//.antMatchers("/mycontroller/**").authenticated()
 //  	    .antMatchers("/console/**").permitAll().anyRequest().authenticated().and().formLogin();
@@ -22,20 +22,10 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 //  	    
 //  	    http.csrf().disable();
 //  	    http.headers().frameOptions().disable();
-//  	}
-//
-//  }
 
-@Configuration
-public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
+		http.authorizeRequests().antMatchers("/").permitAll().antMatchers("/h2-console/**").permitAll();
 
-    @Override
-    protected void configure(HttpSecurity http) throws Exception {
-        http.authorizeRequests()
-                .antMatchers("/").permitAll()
-                .antMatchers("/h2-console/**").permitAll();
-
-        http.csrf().disable();
-        http.headers().frameOptions().disable();
-    }
+		http.csrf().disable();
+		http.headers().frameOptions().disable();
+	}
 }

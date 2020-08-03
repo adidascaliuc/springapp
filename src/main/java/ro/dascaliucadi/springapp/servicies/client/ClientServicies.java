@@ -1,4 +1,4 @@
-package ro.dascaliucadi.springapp.servicies;
+package ro.dascaliucadi.springapp.servicies.client;
 
 import java.util.List;
 
@@ -11,4 +11,5 @@ public interface ClientServicies {
 	Client saveClient(Client client);
 	Client addClient(Client newClient);
 	void deleteClient(Client delClient);
+	List<Client> getAllClients();
 }

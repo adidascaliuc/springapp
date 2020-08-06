@@ -1,6 +1,6 @@
 package ro.dascaliucadi.springapp.enumerari;
 
-public enum SubscriptionEnum {
+public enum SubscriptionsEnum {
 	standard,
 	premium
 }

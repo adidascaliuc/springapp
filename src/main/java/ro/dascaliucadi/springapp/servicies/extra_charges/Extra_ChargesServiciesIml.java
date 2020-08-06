@@ -15,7 +15,6 @@ public class Extra_ChargesServiciesIml implements Extra_ChargesServicies{
 	
 	public Extra_ChargesServiciesIml(Extra_ChargesRepository extra_chargesRepository) {
 		this.extra_chargesRepository = extra_chargesRepository;
-		// TODO Auto-generated constructor stub
 	}
 	
 	@Override

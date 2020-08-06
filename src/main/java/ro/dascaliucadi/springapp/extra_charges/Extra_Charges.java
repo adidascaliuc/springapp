@@ -3,6 +3,8 @@ package ro.dascaliucadi.springapp.extra_charges;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -11,7 +13,7 @@ import javax.persistence.Transient;
 
 import com.sun.istack.NotNull;
 
-import ro.dascaliucadi.springapp.client.Client;
+import ro.dascaliucadi.springapp.clients.Clients;
 import ro.dascaliucadi.springapp.enumerari.Extra_ChargesEnum;
 
 @Entity
@@ -22,16 +24,11 @@ public class Extra_Charges {
 	private final String PREMIUM = "Premium";
 	@Transient
 	private final String STANDARD = "Standard";
-	
 
 	@Id
-	@NotNull
 	@Column(name = "id")
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private int ID;
-
-	@NotNull
-	@Column(name = "client_name")
-	private String ClientName;
 	
 	@NotNull
 	@Column(name="extra_charges_type")
@@ -57,32 +54,23 @@ public class Extra_Charges {
 	@Column(name = "internet_traffic")
 	private double InternetTraffic;
 
-	@ManyToOne(fetch = FetchType.LAZY, optional = false)
-	@JoinColumn(name = "id", nullable = false, updatable = false, insertable = false)
-	private Client client;
+	public Extra_Charges() { }
 
-	public Extra_Charges() {
-	};
-
-	public Extra_Charges(Extra_ChargesEnum extra_chargesType, Client client) {
+	public Extra_Charges(Extra_ChargesEnum extra_chargesType) {
 		if (extra_chargesType.equals(Extra_ChargesEnum.premium)) {
 			this.setCall(2000);
 			this.setInternetTraffic(1000);
-			this.setClientName(client.getName());
 			this.setNetworkCall(500);
 			this.setNetworkSMS(250);
 			this.setSMS(1000);
-			this.setID(client.getID());
 			this.setExtra_ChargesType(PREMIUM);
 			
 		} else {
 			this.setCall(500);
 			this.setInternetTraffic(250);
-			this.setClientName(client.getName());
 			this.setNetworkCall(75);
 			this.setNetworkSMS(50);
 			this.setSMS(250);
-			this.setID(client.getID());
 			this.setExtra_ChargesType(STANDARD);
 		}
 	}
@@ -93,16 +81,6 @@ public class Extra_Charges {
 
 	public void setID(int Id) {
 		ID = Id;
-	}
-
-	
-
-	public String getClientName() {
-		return ClientName;
-	}
-
-	public void setClientName(String clientName) {
-		ClientName = clientName;
 	}
 
 	public String getExtra_ChargesType() {

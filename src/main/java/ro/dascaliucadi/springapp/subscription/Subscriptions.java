@@ -3,20 +3,24 @@ package ro.dascaliucadi.springapp.subscription;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
+import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
+
 import com.sun.istack.NotNull;
 
-import ro.dascaliucadi.springapp.client.Client;
-import ro.dascaliucadi.springapp.enumerari.SubscriptionEnum;
+import ro.dascaliucadi.springapp.clients.Clients;
+import ro.dascaliucadi.springapp.enumerari.SubscriptionsEnum;
 
 @Entity
-@Table(name="subscription")
-public class Subscription {
+@Table(name="subscriptions")
+public class Subscriptions {
 	
 	@Transient
 	private final String PREMIUM = "Premium";
@@ -25,13 +29,9 @@ public class Subscription {
 	
 	
 	@Id
-	@NotNull
 	@Column(name="id")
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private int ID;
-	
-	@NotNull
-	@Column(name="client_name")
-	private String ClientName;
 	
 	@NotNull
 	@Column(name="monthly_cost")
@@ -61,34 +61,26 @@ public class Subscription {
 	@Column(name="subscription_type")
 	private String SubscriptionType;
 	
-	@ManyToOne(fetch = FetchType.LAZY, optional = false)
-	@JoinColumn(name = "id", nullable = false, updatable=false, insertable=false)
-	private Client client;
 	
+	public Subscriptions () { }
 	
-	public Subscription () { }
-	
-	public Subscription(SubscriptionEnum subscriptionType, Client client) {
+	public Subscriptions(SubscriptionsEnum subscriptionType) {
 		
-		if(subscriptionType.equals(SubscriptionEnum.premium)) {
+		if(subscriptionType.equals(SubscriptionsEnum.premium)) {
 			this.setMinutesIncluded(1000);
-			this.setClientName(client.getName());
 			this.setNetworkMinutesIncluded(500);
 			this.setNetworkSMSIncluded(300);
 			this.setSMSIncluded(1500);
 			this.setTrafficIncluded(60000);
-			this.setID(client.getID());
 			this.setMonthlyCost(12);
 			this.setSubscriptionType(PREMIUM);
 		} else {
 			this.setMinutesIncluded(300);
-			this.setClientName(client.getName());
 			this.setNetworkMinutesIncluded(120);
 			this.setNetworkSMSIncluded(50);
 			this.setSMSIncluded(500);
 			this.setTrafficIncluded(3000);
 			this.setMonthlyCost(300);
-			this.setID(client.getID());
 			this.setMonthlyCost(6);
 			this.setSubscriptionType(STANDARD);
 		}
@@ -102,16 +94,6 @@ public class Subscription {
 
 	public void setID(int Id) {
 		ID = Id;
-	}
-
-	
-
-	public String getClientName() {
-		return ClientName;
-	}
-
-	public void setClientName(String clientName) {
-		ClientName = clientName;
 	}
 
 	public String getSubscriptionType() {

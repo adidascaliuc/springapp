@@ -1,70 +1,70 @@
 package ro.dascaliucadi.springapp.bootstrap;
 
-import java.security.Timestamp;
-
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
-import ro.dascaliucadi.springapp.client.Client;
-import ro.dascaliucadi.springapp.client.ClientRepository;
+import ro.dascaliucadi.springapp.clients.Clients;
+import ro.dascaliucadi.springapp.clients.ClientsRepository;
 import ro.dascaliucadi.springapp.enumerari.Extra_ChargesEnum;
-import ro.dascaliucadi.springapp.enumerari.SubscriptionEnum;
+import ro.dascaliucadi.springapp.enumerari.SubscriptionsEnum;
 import ro.dascaliucadi.springapp.extra_charges.Extra_Charges;
 import ro.dascaliucadi.springapp.extra_charges.Extra_ChargesRepository;
-import ro.dascaliucadi.springapp.subscription.Subscription;
-import ro.dascaliucadi.springapp.subscription.SubscriptionRepository;
+import ro.dascaliucadi.springapp.subscription.Subscriptions;
+import ro.dascaliucadi.springapp.subscription.SubscriptionsRepository;
 
 @Component
 public class BootStrapData implements CommandLineRunner {
 
-	private Subscription s1, s2, s3;
-	private Extra_Charges e1, e2, e3;
+	private Subscriptions s1, s2;
+	private Extra_Charges e1, e2;
+	private Clients c1, c2;
 	
-	private final ClientRepository clientRepository;
+	private final ClientsRepository clientRepository;
 	private final Extra_ChargesRepository extra_chargesRepository;
-	private final SubscriptionRepository subscriptionRepository;
+	private final SubscriptionsRepository subscriptionsRepository;
 	
-	public BootStrapData(ClientRepository clientRepository, Extra_ChargesRepository extra_chargesRepository, SubscriptionRepository subscriptionRepository) {
+	public BootStrapData(ClientsRepository clientRepository, Extra_ChargesRepository extra_chargesRepository, SubscriptionsRepository subscriptionsRepository) {
 		this.clientRepository = clientRepository;
 		this.extra_chargesRepository = extra_chargesRepository;
-		this.subscriptionRepository = subscriptionRepository;
+		this.subscriptionsRepository = subscriptionsRepository;
 		
 	}
 	@Override
 	public void run(String... args) throws Exception {
 		System.out.println("Loading Clients data...");
 		
-		Client c1 = new Client("Dascaliuc Adi", "Suceava", 789, "07543887339");
-		clientRepository.save(c1);
+		s1 = new Subscriptions(SubscriptionsEnum.standard);
+		s1.setID(1);
+		subscriptionsRepository.save(s1);
 		
-		s1 = new Subscription(SubscriptionEnum.standard, c1);
-		subscriptionRepository.save(s1);
+		s2 = new Subscriptions(SubscriptionsEnum.premium);
+		s2.setID(2);
+		subscriptionsRepository.save(s2);
 		
-		e1 = new Extra_Charges(Extra_ChargesEnum.standard ,c1);
+		
+		e1 = new Extra_Charges(Extra_ChargesEnum.standard);
+		e1.setID(1);
 		extra_chargesRepository.save(e1);
 		
-		
-		Client c2 = new Client("Dacian Ciolos", "Bucuresti", 9999.99, "0125869730");
-		clientRepository.save(c2);
-		
-		s2 = new Subscription(SubscriptionEnum.premium, c2);
-		subscriptionRepository.save(s2);
-		
-		e2 = new Extra_Charges(Extra_ChargesEnum.premium, c2);
+		e2 = new Extra_Charges(Extra_ChargesEnum.premium);
+		e2.setID(2);
 		extra_chargesRepository.save(e2);
 		
 		
-		Client c3 = new Client("Tepes Vlad", "Cluj", 234.34, "0321685963");
-		clientRepository.save(c3);
+		c1 = new Clients("Dascaliuc Adi", "Suceava", 800.78, "0743887339");
+		//c1.setSubscriptionType(s1.getSubscriptionType());
+		//c1.setExtra_ChargesType(e1.getExtra_ChargesType());
+		clientRepository.save(c1);
 		
+		c2 = new Clients("Vasilescu Vasile", "Cluj", 777.77, "0213698574");
+		//c2.setSubscriptionType(s2.getSubscriptionType());
+		//c2.setExtra_ChargesType(e2.getExtra_ChargesType());
+		clientRepository.save(c2);
 		
-		s3 = new Subscription(SubscriptionEnum.standard, c3);
-		subscriptionRepository.save(s3);
-		
-		e3 = new Extra_Charges(Extra_ChargesEnum.premium ,c3);
-		extra_chargesRepository.save(e3);
-		
+		System.out.println("Loaded " + subscriptionsRepository.count() + " subscriptions.");
+		System.out.println("Loaded " + extra_chargesRepository.count() + " extra charges.");
 		System.out.println("Loaded " + clientRepository.count() + " clients.");
+		
 		
 	}
 }

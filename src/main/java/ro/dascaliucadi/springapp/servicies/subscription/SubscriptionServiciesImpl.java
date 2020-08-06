@@ -5,23 +5,23 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
-import ro.dascaliucadi.springapp.subscription.Subscription;
-import ro.dascaliucadi.springapp.subscription.SubscriptionRepository;
+import ro.dascaliucadi.springapp.subscription.Subscriptions;
+import ro.dascaliucadi.springapp.subscription.SubscriptionsRepository;
 
 @Service
 public class SubscriptionServiciesImpl implements SubscriptionServicies{
 	
-	private final SubscriptionRepository subscriptionRepository;
+	private final SubscriptionsRepository subscriptionRepository;
 	
-	public SubscriptionServiciesImpl(SubscriptionRepository subscriptionRepository) {
+	public SubscriptionServiciesImpl(SubscriptionsRepository subscriptionRepository) {
 		this.subscriptionRepository = subscriptionRepository;
 		// TODO Auto-generated constructor stub
 	}
 	
 	@Override
-	public List<Subscription> getAllSubscriptions() {
-		List<Subscription> subscriptions = new ArrayList<Subscription>();
-		for(Subscription sub : subscriptionRepository.findAll()) {
+	public List<Subscriptions> getAllSubscriptions() {
+		List<Subscriptions> subscriptions = new ArrayList<Subscriptions>();
+		for(Subscriptions sub : subscriptionRepository.findAll()) {
 			subscriptions.add(sub);
 		}
 		return subscriptions;

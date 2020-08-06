@@ -1,0 +1,55 @@
+<!DOCTYPE html >
+<html xmlns:th="http://thymeleaf.org">
+<head>
+<title>First Spring App</title>
+<link href="/css/modify.css" rel="stylesheet">
+</head>
+<body>
+	<div role="navigation">
+		<div class="topnav">
+			<div class="navbar-collapse collapse">
+				<ul class="nav navbar-nav">
+					<li><a href="/" class="navbar-brand">Home</a></li>
+					<li><a href="/table/clients">All Clients</a></li>
+					<li><a href="/table/subscriptions">Subscription</a></li>
+					<li><a href="/table/extra_charges">Extra Charges</a></li>
+
+				</ul>
+			</div>
+		</div>
+	</div>
+
+	<p class="ptext">This is my first Spring WEB app.</p>
+	<div class="container text-center" id="tasksDiv">
+		<h3>All Extra Chargeses</h3>
+		<hr>
+		<div class="table-responsive">
+					<table class="table table-striped table-bordered">
+						<thead>
+							<tr>
+								<th>Id</th>
+								<th>Network Call</th>
+								<th>Network SMS</th>
+								<th>Call</th>
+								<th>SMS</th>
+								<th>Internet Traffic</th>
+								<th>Extra Charges Type</th>
+								<th></th>
+							</tr>
+						</thead>
+						<tbody>
+								<tr th:each="extra: ${extra_charges}">
+									<td th:text="${extra.getID() }" />
+									<td th:text="${extra.getNetworkCall() }" />
+									<td th:text="${extra.getNetworkSMS() }" />
+									<td th:text="${extra.getCall() }" />
+									<td th:text="${extra.getSMS() }" />
+									<td th:text="${extra.getInternetTraffic() }" />
+									<td th:text="${extra.getExtra_ChargesType() }" />
+								</tr>
+						</tbody>
+					</table>
+				</div>
+			</div>
+</body>
+</html>

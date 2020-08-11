@@ -25,10 +25,11 @@ import org.springframework.web.bind.annotation.RestController;
 import ro.dascaliucadi.springapp.clients.Clients;
 import ro.dascaliucadi.springapp.security.jwt.AuthenticationRequest;
 import ro.dascaliucadi.springapp.security.jwt.AuthenticationResponse;
-import ro.dascaliucadi.springapp.security.jwt.JwtUtil;
 import ro.dascaliucadi.springapp.security.jwt.MyUserDetailsService;
 import ro.dascaliucadi.springapp.servicies.client.ClientsServicies;
+import ro.dascaliucadi.springapp.token_auth.JwtUtil;
 
+@RequestMapping("/api")
 @RestController
 public class FirstSpringRestController {
 
@@ -89,12 +90,13 @@ public class FirstSpringRestController {
 	public Clients getClientById(@PathVariable int ID) {
 		return clientServicies.findClientByID(ID);
 	}
-
+	
 	@PostMapping("/client/id")
 	@ResponseStatus(HttpStatus.CREATED)
 	public Clients addClient(@RequestBody Clients newClient) {
 		return clientServicies.addClient(newClient);
 	}
+	
 
 	@PutMapping("/client/update")
 	@ResponseStatus(HttpStatus.CREATED)

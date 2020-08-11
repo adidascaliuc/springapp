@@ -1,4 +1,4 @@
-package ro.dascaliucadi.springapp.security.jwt;
+package ro.dascaliucadi.springapp.token_auth;
 
 import java.io.IOException;
 
@@ -14,6 +14,8 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
+
+import ro.dascaliucadi.springapp.security.jwt.MyUserDetailsService;
 
 @Component
 public class JwtRequestFilter extends OncePerRequestFilter {

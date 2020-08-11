@@ -2,20 +2,14 @@ package ro.dascaliucadi.springapp.subscription;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
-import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
-
 import com.sun.istack.NotNull;
 
-import ro.dascaliucadi.springapp.clients.Clients;
 import ro.dascaliucadi.springapp.enumerari.SubscriptionsEnum;
 
 @Entity
@@ -59,7 +53,7 @@ public class Subscriptions {
 	
 	@NotNull
 	@Column(name="subscription_type")
-	private String SubscriptionType;
+	private int SubscriptionType;
 	
 	
 	public Subscriptions () { }
@@ -73,7 +67,7 @@ public class Subscriptions {
 			this.setSMSIncluded(1500);
 			this.setTrafficIncluded(60000);
 			this.setMonthlyCost(12);
-			this.setSubscriptionType(PREMIUM);
+			this.setSubscriptionType(1);
 		} else {
 			this.setMinutesIncluded(300);
 			this.setNetworkMinutesIncluded(120);
@@ -82,7 +76,7 @@ public class Subscriptions {
 			this.setTrafficIncluded(3000);
 			this.setMonthlyCost(300);
 			this.setMonthlyCost(6);
-			this.setSubscriptionType(STANDARD);
+			this.setSubscriptionType(2);
 		}
 	}
 	
@@ -96,11 +90,11 @@ public class Subscriptions {
 		ID = Id;
 	}
 
-	public String getSubscriptionType() {
+	public int getSubscriptionType() {
 		return SubscriptionType;
 	}
 
-	public void setSubscriptionType(String subscriptionType) {
+	public void setSubscriptionType(int subscriptionType) {
 		SubscriptionType = subscriptionType;
 	}
 

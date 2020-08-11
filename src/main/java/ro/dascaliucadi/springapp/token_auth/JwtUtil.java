@@ -1,4 +1,4 @@
-package ro.dascaliucadi.springapp.security.jwt;
+package ro.dascaliucadi.springapp.token_auth;
 
 
 import java.util.Date;
@@ -55,6 +55,4 @@ public class JwtUtil {
 		final String username = extractUsername(token);
 		return (username.equals(userDetails.getUsername()) && !isTokenExpired(token));
 	}
-	
-	
 }

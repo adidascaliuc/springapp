@@ -17,7 +17,7 @@ public class BootStrapData implements CommandLineRunner {
 
 	private Subscriptions s1, s2;
 	private Extra_Charges e1, e2;
-	private Clients c1, c2;
+	private Clients c1, c2, c3;
 	
 	private final ClientsRepository clientRepository;
 	private final Extra_ChargesRepository extra_chargesRepository;
@@ -52,19 +52,23 @@ public class BootStrapData implements CommandLineRunner {
 		
 		
 		c1 = new Clients("Dascaliuc Adi", "Suceava", 800.78, "0743887339");
-		//c1.setSubscriptionType(s1.getSubscriptionType());
-		//c1.setExtra_ChargesType(e1.getExtra_ChargesType());
+		c1.setSubscriptionType(s1.getSubscriptionType());
+		c1.setExtra_ChargesType(e1.getExtra_ChargesType());
 		clientRepository.save(c1);
 		
 		c2 = new Clients("Vasilescu Vasile", "Cluj", 777.77, "0213698574");
-		//c2.setSubscriptionType(s2.getSubscriptionType());
-		//c2.setExtra_ChargesType(e2.getExtra_ChargesType());
+		c2.setSubscriptionType(s2.getSubscriptionType());
+		c2.setExtra_ChargesType(e2.getExtra_ChargesType());
 		clientRepository.save(c2);
+		
+		c3 = new Clients("Stefanescu Stefan", "Brasov", 34.56, "0216983574");
+		c3.setSubscriptionType(s1.getSubscriptionType());
+		c3.setExtra_ChargesType(e2.getExtra_ChargesType());
+		clientRepository.save(c3);
 		
 		System.out.println("Loaded " + subscriptionsRepository.count() + " subscriptions.");
 		System.out.println("Loaded " + extra_chargesRepository.count() + " extra charges.");
 		System.out.println("Loaded " + clientRepository.count() + " clients.");
-		
 		
 	}
 }

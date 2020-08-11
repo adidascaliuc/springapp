@@ -2,18 +2,14 @@ package ro.dascaliucadi.springapp.extra_charges;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
 import com.sun.istack.NotNull;
 
-import ro.dascaliucadi.springapp.clients.Clients;
 import ro.dascaliucadi.springapp.enumerari.Extra_ChargesEnum;
 
 @Entity
@@ -32,7 +28,7 @@ public class Extra_Charges {
 	
 	@NotNull
 	@Column(name="extra_charges_type")
-	private String Extra_ChargesType;
+	private int Extra_ChargesType;
 
 	@NotNull
 	@Column(name = "network_call")
@@ -63,7 +59,7 @@ public class Extra_Charges {
 			this.setNetworkCall(500);
 			this.setNetworkSMS(250);
 			this.setSMS(1000);
-			this.setExtra_ChargesType(PREMIUM);
+			this.setExtra_ChargesType(1);
 			
 		} else {
 			this.setCall(500);
@@ -71,7 +67,7 @@ public class Extra_Charges {
 			this.setNetworkCall(75);
 			this.setNetworkSMS(50);
 			this.setSMS(250);
-			this.setExtra_ChargesType(STANDARD);
+			this.setExtra_ChargesType(2);
 		}
 	}
 
@@ -83,11 +79,11 @@ public class Extra_Charges {
 		ID = Id;
 	}
 
-	public String getExtra_ChargesType() {
+	public int getExtra_ChargesType() {
 		return Extra_ChargesType;
 	}
 
-	public void setExtra_ChargesType(String extra_ChargesType) {
+	public void setExtra_ChargesType(int extra_ChargesType) {
 		Extra_ChargesType = extra_ChargesType;
 	}
 

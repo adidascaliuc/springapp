@@ -6,7 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -33,9 +32,8 @@ public class FirstSpringController {
 	}
 
 	@GetMapping("/")
-	public String mainPage(Model model) {
-		model.addAttribute("clients", clientServicies.findAllClients());
-		return "clients";
+	public String mainPage() {
+		return "homepage";
 	}
 	
 	@GetMapping("/table/clients")
@@ -56,11 +54,12 @@ public class FirstSpringController {
 		return "extra_charges";
 	}
 	
-	@GetMapping("/modify/client/")
-	public String modifyForm(Model model, @PathVariable int id) {
-		model.addAttribute("clients", clientServicies.findAllClients());
+	@GetMapping("modify/client")
+	public String modifyClient(@RequestParam int id, Model model) {
+		model.addAttribute("client", clientServicies.findClientByID(id));
 		return "modify";
 	}
+	
 	
 	@RequestMapping(value="/succesfful", method=RequestMethod.POST)
 	public String succesfful(@RequestParam("id") int id, @RequestParam("name") String name,

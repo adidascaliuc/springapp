@@ -7,11 +7,7 @@ import org.springframework.stereotype.Service;
 
 import ro.dascaliucadi.springapp.clients.Clients;
 import ro.dascaliucadi.springapp.clients.ClientsRepository;
-import ro.dascaliucadi.springapp.enumerari.Extra_ChargesEnum;
-import ro.dascaliucadi.springapp.enumerari.SubscriptionsEnum;
-import ro.dascaliucadi.springapp.extra_charges.Extra_Charges;
 import ro.dascaliucadi.springapp.extra_charges.Extra_ChargesRepository;
-import ro.dascaliucadi.springapp.subscription.Subscriptions;
 import ro.dascaliucadi.springapp.subscription.SubscriptionsRepository;
 
 @Service
@@ -47,6 +43,8 @@ public class ClientsServiciesImpl implements ClientsServicies {
 
 	@Override
 	public Clients addClient(Clients newClient) {
+		newClient.setSubscriptionType(1);
+		newClient.setExtra_ChargesType(1);
 		clientRepository.save(newClient);
 		return newClient;
 	}

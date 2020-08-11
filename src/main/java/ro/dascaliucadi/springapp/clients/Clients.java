@@ -8,18 +8,13 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
-import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
-
 import com.sun.istack.NotNull;
 
-import ro.dascaliucadi.springapp.enumerari.SubscriptionsEnum;
 import ro.dascaliucadi.springapp.extra_charges.Extra_Charges;
 import ro.dascaliucadi.springapp.subscription.Subscriptions;
-import ro.dascaliucadi.springapp.subscription.SubscriptionsRepository;
 
 @Entity
 @Table(name="CLIENTS" )
@@ -28,32 +23,32 @@ public class Clients {
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	@NotNull
-	@Column(name="id", unique=true)
+	@Column(name="id")
 	private int ID;
 	
 	@NotNull
-	@Column(name="name", unique=true)
+	@Column(name="name")
 	private String Name;
 	
 	@NotNull
-	@Column(name="address", unique=true)
+	@Column(name="address")
 	private String Address;
 	
 	@NotNull
-	@Column(name="phone" ,unique=true)
+	@Column(name="phone")
 	private String Phone;
 	
 	@NotNull
-	@Column(name="balance", unique=true)
+	@Column(name="balance")
 	private double Balance;
 	
 	@NotNull
-	@Column(name="subscription_type", unique=true)
-	private String SubscriptionType;
+	@Column(name="subscription_type")
+	private int SubscriptionType;
 	
 	@NotNull
-	@Column(name="extra_charges_type", unique=true)
-	private String Extra_ChargesType;
+	@Column(name="extra_charges_type")
+	private int Extra_ChargesType;
 	
 	@Transient
 	private String User;
@@ -62,11 +57,11 @@ public class Clients {
 	private String Token;
 	
 	@ManyToOne(fetch = FetchType.LAZY, optional = false)
-	@JoinColumn(name = "extra_charges_type", updatable=false, insertable=false)
+	@JoinColumn(name = "subscription_type", updatable=false, insertable=false)
 	private Subscriptions subscription;
 	
 	@ManyToOne(fetch = FetchType.LAZY, optional = false)
-	@JoinColumn(name = "subscription_type", updatable=false, insertable=false)
+	@JoinColumn(name = "extra_charges_type", updatable=false, insertable=false)
 	private Extra_Charges extra_charges;
 	
 	public Clients() { }
@@ -122,16 +117,16 @@ public class Clients {
 	public void setBalance(double balance) {
 		Balance = balance;
 	}
-	public String getSubscriptionType() {
+	public int getSubscriptionType() {
 		return SubscriptionType;
 	}
-	public void setSubscriptionType(String subscriptionType) {
+	public void setSubscriptionType(int subscriptionType) {
 		SubscriptionType = subscriptionType;
 	}
-	public String getExtra_ChargesType() {
+	public int getExtra_ChargesType() {
 		return Extra_ChargesType;
 	}
-	public void setExtra_ChargesType(String extra_ChargesType) {
+	public void setExtra_ChargesType(int extra_ChargesType) {
 		Extra_ChargesType = extra_ChargesType;
 	}
 	

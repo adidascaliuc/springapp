@@ -1,0 +1,39 @@
+<!DOCTYPE html >
+<html xmlns:th="http://thymeleaf.org">
+<head>
+<title>Simulate Charger</title>
+<link href="/css/main.css" rel="stylesheet" type="text/css">
+</head>
+<body>
+	<header>
+		<div role="navigation" class="wrapper">
+			<ul class="nav navbar-nav">
+				<li class="active"><a href="/" class="navbar-brand">Home</a></li>
+				
+				<li><a href="#">Servicies</a>
+					<ul class="ul-inside">
+						<li><a href="/table/clients">All Clients</a></li>
+						<li><a href="/table/subscriptions">Subscription</a></li>
+						<li><a href="/table/extra_charges">Extra Charges</a></li>
+					</ul>
+				</li>
+				<li><a href="/simulate">Simulate Charger</a></li>
+				<li><a href="#">Contact</a></li>
+			</ul>
+		</div>		
+	</header>
+	<p class="chooseMessage">Choose one to make a simulation:</p>
+	<div>
+		<p class="phoneMessage">Click on icon for phone call simulation.</p>
+		<p class="messageMessage">Click on icon for message simulation.</p>
+		<p class="networkMessage">Click on icon for network traffic simulation.</p>		
+	</div>
+	
+	<div class="image-buttons">
+		<a href="/simulate/phone-call"><img name="phone" class="image-size phone-image" src="../call.png"></a>
+		<a href="/simulate/message"><img class="image-size message-image" src="sms.png"></a>
+		<a href="/simulate/network-traffic"><img class="image-size network-image" src="network.png"></a>
+	</div>
+
+</body>
+</html>

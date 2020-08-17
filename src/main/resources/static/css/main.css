@@ -4,30 +4,16 @@
 	font-family: Century Gothic;
 }
 
-.home-header {
-	background-image: url(../backgroundHeader.png);
-	height: 100vh;
-	background-size: cover;
-	background-position: center;
-}
-
-table {
-	margin-top: 10px;
-}
-
-.header {
-	position: relative;
-	top: -100px;
-}
-
-.border {
-	margin-top: 100px;
-}
-
 ul {
 	float: right;
 	list-style-type: none;
 	margin-top: 25px;
+}
+
+.ul-inside {
+	width: 200px;
+	position: absolute;
+	top: 50px;
 }
 
 ul li {
@@ -52,6 +38,38 @@ ul li.active a {
 	color: #fff;
 }
 
+.wrapper ul li {
+	line-height: 50px;
+}
+
+.wrapper ul ul {
+	display: none;
+}
+
+.wrapper ul li:hover>ul {
+	display: block;
+}
+
+.home-header {
+	background-image: url(../backgroundHeader.png);
+	height: 100vh;
+	background-size: cover;
+	background-position: center;
+}
+
+table {
+	margin-top: 10px;
+}
+
+.header {
+	position: relative;
+	top: -100px;
+}
+
+.border {
+	margin-top: 100px;
+}
+
 .main {
 	max-width: 1200px;
 	margin: auto;
@@ -60,6 +78,8 @@ ul li.active a {
 table {
 	border-collapse: collapse;
 	width: 100%;
+	position: relative;
+	top: 100px;
 }
 
 th, td {
@@ -72,7 +92,8 @@ tr:nth-child(even) {
 }
 
 th {
-	margin-top: 10px; background-color : #000000;
+	margin-top: 10px;
+	background-color: #000000;
 	color: white;
 	background-color: #000000;
 }
@@ -81,7 +102,7 @@ ul {
 	list-style-type: none;
 }
 
-p {
+.p-home {
 	color: white;
 	position: absolute;
 	left: 33%;
@@ -93,4 +114,404 @@ p {
 
 h3 {
 	padding: 150px;
+}
+
+/*********************** 
+ ***Simulate Page CSS***
+ ************************/
+.chooseMessage {
+	position: absolute;
+	top: 150px;
+	left: 30%;
+	font-size: 30px;
+}
+
+.phoneMessage {
+	position: absolute;
+	top: 310px;
+	width: 200px;
+	left: 22%;
+}
+
+.messageMessage {
+	position: absolute;
+	top: 310px;
+	left: 41%;
+	width: 200px;
+}
+
+.networkMessage {
+	position: absolute;
+	top: 310px;
+	left: 60%;
+	width: 200px;
+}
+
+.image-size {
+	width: 50px;
+	height: 50px;
+}
+
+.phone-image {
+	position: absolute;
+	top: 250px;
+	left: 27%;
+}
+
+.message-image {
+	position: absolute;
+	top: 250px;
+	left: 46%;
+}
+
+.network-image {
+	position: absolute;
+	top: 250px;
+	left: 65%;
+}
+
+/*********************** 
+ ***Phone Call CSS***
+ ************************/
+.labelPhoneCall {
+	position: absolute;
+	top: 105px;
+	left: 30px;
+	font-size: 30px;
+}
+
+.message {
+	position: absolute;
+	top: 100px;
+	left: 32%;
+}
+
+.historyCallsMessage {
+	position: absolute;
+	top: 210px;
+	left: 52px;
+	font-size: 30px;
+}
+
+.dialNumber {
+	background-image: url(../phoneNumber.png);
+	background-size: 285px 460px;
+	width: 282px;
+	height: 460px;
+	position: absolute;
+	top: 125px;
+	left: 30.4%;
+}
+
+.select-first {
+	position: absolute;
+	top: 150px;
+	left: 30px;
+	width: 225px;
+	height: 50px;
+	font-size: 30px;
+	text-align-last: center;
+}
+
+.select-second {
+	position: absolute;
+	top: 170px;
+	left: 31.81%;
+	display: inline-block;
+	z-index: 1;
+	width: 244px;
+	height: 40px;
+	font-size: 30px;
+	text-align-last: center;
+}
+
+.buttonImage {
+	background-image: url(../callButton.png);
+	background-size: 51px 51px;
+	width: 51px;
+	height: 51px;
+	position: absolute;
+	top: 460px;
+	left: 39.2%;
+	z-index: 1;
+	border: 0;
+}
+
+/*********************** 
+ ***Make Call CSS***
+ ************************/
+.inCall {
+	background-image: url(../inCall.png);
+	background-size: 285px 460px;
+	width: 282px;
+	height: 460px;
+	position: absolute;
+	top: 125px;
+	left: 30.4%;
+}
+
+.endCallButton {
+	background-image: url(../endCallButton.png);
+	background-size: 50.5px 50.5px;
+	width: 50px;
+	height: 50px;
+	position: absolute;
+	top: 460px;
+	left: 39%;
+	z-index: 1;
+	border: 0;
+}
+
+.startAtMessage {
+	position: absolute;
+	top: 100px;
+	left: 20px;
+	font-size: 25px;
+}
+
+.dateStart {
+	position: absolute;
+	top: 100px;
+	left: 115px;
+	font-size: 25px;
+}
+
+.endAtMessage {
+	position: absolute;
+	top: 140px;
+	left: 20px;
+	font-size: 25px;
+}
+
+.labelPhoneCallMessageTo {
+	position: absolute;
+	top: 165px;
+	left: 350px;
+	font-size: 30px;
+	width: 250px;
+}
+
+/*********************** 
+ ***Make SMS CSS***
+ ************************/
+.messageTemplate {
+	background-image: url(../inSMS.png);
+	background-size: 285px 460px;
+	width: 282px;
+	height: 460px;
+	position: absolute;
+	top: 125px;
+	left: 30.4%;
+}
+
+.buttonSendImage {
+	background-image: url(../sendMessage.png);
+	background-size: 40px 40px;
+	width: 40px;
+	height: 40px;
+	position: absolute;
+	top: 520px;
+	left: 46%;
+	z-index: 1;
+}
+
+.labelMessage {
+	position: absolute;
+	top: 105px;
+	left: 30px;
+	font-size: 30px;
+	width: 250px;
+}
+
+.labelTo {
+	position: absolute;
+	top: 150px;
+	left: 350px;
+	font-size: 30px;
+	width: 250px;
+}
+
+.select-firstSMS {
+	position: absolute;
+	top: 200px;
+	left: 30px;
+	width: 230px;
+	height: 50px;
+	font-size: 30px;
+	text-align-last: center;
+}
+
+.select-secondSMS {
+	position: absolute;
+	top: 160px;
+	left: 40%;
+	display: inline-block;
+	z-index: 1;
+	width: 110px;
+	height: 20px;
+	font-size: 15px;
+	text-align-last: center;
+}
+
+.txtMessage {
+	position: absolute;
+	top: 365px;
+	left: 31.8%;
+	z-index: 1;
+	width: 242px;
+	height: 145px;
+}
+
+.historySmsMessage {
+	position: absolute;
+	top: 250px;
+	left: 30px;
+	font-size: 30px;
+}
+
+/*********************** 
+ ***Phone Bill CSS***
+ ************************/
+.msgPhoneBill {
+	position: absolute;
+	top: 100px;
+	left: 45%;
+	font-size: 30px;
+}
+
+.msgClientName {
+	position: absolute;
+	top: 200px;
+	left: 15%;
+}
+
+.msgPhoneNr {
+	position: absolute;
+	top: 225px;
+	left: 15%;
+}
+
+.msgCallsSmsToPay {
+	position: absolute;
+	top: 350px;
+	left: 60%;
+}
+
+.msgCallsPay {
+	position: absolute;
+	top: 300px;
+	left: 10%;
+}
+
+.msgSmsPay {
+	position: absolute;
+	top: 325px;
+	left: 10%;
+}
+
+.msgSubscriptionType {
+	position: absolute;
+	top: 400px;
+	left: 10%;
+}
+
+.msgExtraChargesType {
+	position: absolute;
+	top: 425px;
+	left: 10%;
+}
+
+.billingImg {
+	background-image: url(../billing.png);
+	background-size: 180px 180px;
+	width: 180px;
+	height: 180px;
+	position: absolute;
+	top: 10px;
+	left: 10px;
+}
+
+/*********************** 
+ ***Phone Bill CSS***
+ ************************/
+.msgCronos {
+	position: absolute;
+	top: 100px;
+	left: 40%;
+	font-size: 30px;
+}
+
+.msgInfoCronos {
+	position: absolute;
+	top: 200px;
+	left: 400px;
+	font-size: 20px;
+	width: 450px;
+}
+
+/*********************** 
+ ***Network Traffic CSS***
+ ************************/
+.imgNetworkDisable {
+	background-image: url(../networkDisableNet.png);
+	background-size: 285px 460px;
+	width: 282px;
+	height: 460px;
+	position: absolute;
+	top: 125px;
+	left: 31.5%;
+}
+
+.buttonOnNetwork {
+	background-size: 30px 30px;
+	width: 25px;
+	height: 25px;
+	position: absolute;
+	top: 263px;
+	left: 44.60%;
+	z-index: 1;
+}
+
+.networkOn {
+	background-image: url(../networkEnableNet.png);
+	background-size: 285px 460px;
+	width: 282px;
+	height: 460px;
+	position: absolute;
+	top: 125px;
+	left: 31.5%;
+}
+
+.buttonOffNetwork {
+	background-size: 30px 30px;
+	width: 25px;
+	height: 25px;
+	position: absolute;
+	top: 263px;
+	left: 44.60%;
+	z-index: 1;
+}
+
+.labelNetType {
+	position: absolute;
+	top: 210px;
+	left: 30px;
+	font-size: 30px;
+}
+
+.select-net-type {
+	position: absolute;
+	top: 260px;
+	left: 30px;
+	width: 230px;
+	height: 50px;
+	font-size: 30px;
+	text-align-last: center;
+}
+
+.historyNetworkMessage {
+	position: absolute;
+	top: 330px;
+	left: 30px;
+	font-size: 30px;
 }

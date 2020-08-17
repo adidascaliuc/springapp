@@ -1,0 +1,45 @@
+<!DOCTYPE html >
+<html xmlns:th="http://thymeleaf.org">
+<head>
+<title>Simulation Phone</title>
+<link href="/css/main.css" rel="stylesheet" type="text/css">
+</head>
+<body>
+	<header>
+		<div role="navigation" class="wrapper">
+			<ul class="nav navbar-nav">
+				<li class="active"><a href="/" class="navbar-brand">Home</a></li>
+				
+				<li><a href="#">Servicies</a>
+					<ul class="ul-inside">
+						<li><a href="/table/clients">All Clients</a></li>
+						<li><a href="/table/subscriptions">Subscription</a></li>
+						<li><a href="/table/extra_charges">Extra Charges</a></li>
+					</ul>
+				</li>
+				<li><a href="/simulate">Simulate Charger</a></li>
+				<li><a href="#">Contact</a></li>
+			</ul>
+		</div>
+	</header>
+	<p class="message">This is simulation for phone call.</p>
+	<a href="/history/calls" class="historyCallsMessage">History Calls</a><br><br>
+	
+	<form action="#" th:action=@{/simulate/phone-call} th:object="${client}" method="post">
+		
+		<label class="labelPhoneCall">Make call from: </label>
+		<select class="select-first" th:field="*{Phone}">
+			<option th:each="cl : ${clients }" th:value="${cl.getPhone() }" th:text="${cl.getPhone() }">
+		</select>
+		
+		<label class="labelPhoneCallMessageTo">To: </label>
+		<select class="select-second" th:field="*{Phone}">
+			<option th:each="cl : ${clients }" th:value="${cl.getPhone() }" th:text="${cl.getPhone() }">
+		</select><br>
+		
+		<button type="submit"><img class="buttonImage" /></button>
+	</form>
+	
+	<div class="dialNumber"></div>
+</body>
+</html>

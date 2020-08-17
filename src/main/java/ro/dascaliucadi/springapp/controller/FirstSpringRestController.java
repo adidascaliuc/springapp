@@ -1,4 +1,4 @@
-package ro.dascaliucadi.springapp;
+package ro.dascaliucadi.springapp.controller;
 
 import java.util.List;
 

@@ -1,11 +1,11 @@
 <!DOCTYPE html >
 <html xmlns:th="http://thymeleaf.org">
 <head>
-<title>Home</title>
+<title>Cronos</title>
 <link href="/css/main.css" rel="stylesheet" type="text/css">
 </head>
 <body>
-	<header class="home-header">
+	<header>
 		<div role="navigation" class="wrapper">
 			<ul class="nav navbar-nav">
 				<li class="active"><a href="/" class="navbar-brand">Home</a></li>
@@ -21,8 +21,15 @@
 				<li><a href="#">Contact</a></li>
 			</ul>
 		</div>
-		<p class="p-home">Welcome to our page</p>
 	</header>
-
-</body>
+	<span class="msgCronos">Cronos page</span>
+	
+	<span class="msgInfoCronos" th:text="${'You have '+callMinutes+' minutes, '+smsRemaining+ 'SMS, ' 
+		+ networkMinutesRemaining + ' network minutes, ' + networkSmsRemaining + ' network sms, '
+		+ trafficRemaining + ' internet traffic'}"></span>
+	
+	<span class="msgSubscriptionPay" th:text="${subscriptionPay }"></span>
+	<span class="msgSubscriptionTypeCronos" th:text="${subType }"></span>
+	
+	</body>
 </html>

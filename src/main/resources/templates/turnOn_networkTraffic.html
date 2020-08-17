@@ -1,11 +1,11 @@
 <!DOCTYPE html >
 <html xmlns:th="http://thymeleaf.org">
 <head>
-<title>Home</title>
+<title>Simulation Network Traffic</title>
 <link href="/css/main.css" rel="stylesheet" type="text/css">
 </head>
 <body>
-	<header class="home-header">
+	<header>
 		<div role="navigation" class="wrapper">
 			<ul class="nav navbar-nav">
 				<li class="active"><a href="/" class="navbar-brand">Home</a></li>
@@ -21,8 +21,16 @@
 				<li><a href="#">Contact</a></li>
 			</ul>
 		</div>
-		<p class="p-home">Welcome to our page</p>
 	</header>
+	<p class="message">This is simulation for network traffic.</p>
+	
+	<form action="#" th:action="@{/simulate/network-traffic/end}" th:object="${client}" method="post">
+		<span class="startAtMessage">Start at:</span><span class="dateStart" th:text="${client.getNetworkHistory().getTrafficStart() }" th:field="*{networkHistory.TrafficStart}"></span><br>
+		<span class="endAtMessage">End at: Still running...</span><br>
 
+		<button type="submit"><img class="buttonOffNetwork" /></button>
+	</form>
+		
+	<div class="networkOn"></div>
 </body>
 </html>

@@ -1,0 +1,55 @@
+<!DOCTYPE html >
+<html xmlns:th="http://thymeleaf.org">
+<head>
+<title>History Network</title>
+<link href="/css/main.css" rel="stylesheet" type="text/css">
+</head>
+<body>
+	<header class="header">
+		<div role="navigation" class="wrapper">
+			<ul class="nav navbar-nav">
+				<li class="active"><a href="/" class="navbar-brand">Home</a></li>
+				
+				<li><a href="#">Servicies</a>
+					<ul class="ul-inside">
+						<li><a href="/table/clients">All Clients</a></li>
+						<li><a href="/table/subscriptions">Subscription</a></li>
+						<li><a href="/table/extra_charges">Extra Charges</a></li>
+					</ul>
+				</li>
+				<li><a href="/simulate">Simulate Charger</a></li>
+				<li><a href="#">Contact</a></li>
+			</ul>
+		</div>
+	</header >
+
+	<div class="border">
+		<div>
+			<table class="table-bordered">
+				<thead>
+					<tr>
+						<th>Id</th>
+						<th>Client Id</th>
+						<th>Phone Number</th>
+						<th>Network Traffic Start</th>
+						<th>Network Traffic End</th>
+						<th>Minutes Spend</th>
+						<th>Network Traffic Type</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr th:each="net : ${allNetworkTraffic}">
+						<td th:text="${net.getID() }" />
+						<td th:text="${net.getClientId() }" />
+						<td th:text="${net.getPhoneNumber() }" />
+						<td th:text="${net.getTrafficStart() }" />
+						<td th:text="${net.getTrafficEnd() }" />
+						<td th:text="${net.getMinutesSpend() }" />
+						<td th:text="${net.getTrafficType() }" />
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	</div>
+</body>
+</html>

@@ -50,25 +50,13 @@ public class Extra_Charges {
 	@Column(name = "internet_traffic")
 	private double InternetTraffic;
 
-	public Extra_Charges() { }
-
-	public Extra_Charges(Extra_ChargesEnum extra_chargesType) {
-		if (extra_chargesType.equals(Extra_ChargesEnum.premium)) {
-			this.setCall(2000);
-			this.setInternetTraffic(1000);
-			this.setNetworkCall(500);
-			this.setNetworkSMS(250);
-			this.setSMS(1000);
+	public Extra_Charges() {
+			this.setCall(0);
+			this.setInternetTraffic(0);
+			this.setNetworkCall(0);
+			this.setNetworkSMS(0);
+			this.setSMS(0);
 			this.setExtra_ChargesType(1);
-			
-		} else {
-			this.setCall(500);
-			this.setInternetTraffic(250);
-			this.setNetworkCall(75);
-			this.setNetworkSMS(50);
-			this.setSMS(250);
-			this.setExtra_ChargesType(2);
-		}
 	}
 
 	public int getID() {

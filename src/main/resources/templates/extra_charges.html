@@ -6,14 +6,19 @@
 </head>
 <body>
 	<header class="header">
-		<div role="navigation">
-			<ul>
-				<li><a href="/">Home</a></li>
-				<li><a href="/table/clients">All Clients</a></li>
-				<li><a href="/table/subscriptions">Subscription</a></li>
-				<li class="active"><a href="/table/extra_charges">Extra
-						Charges</a></li>
-
+		<div role="navigation" class="wrapper">
+			<ul class="nav navbar-nav">
+				<li><a href="/" class="navbar-brand">Home</a></li>
+				
+				<li class="active"><a href="#">Servicies</a>
+					<ul class="ul-inside">
+						<li><a href="/table/clients">All Clients</a></li>
+						<li><a href="/table/subscriptions">Subscription</a></li>
+						<li><a href="/table/extra_charges">Extra Charges</a></li>
+					</ul>
+				</li>
+				<li><a href="/simulate">Simulate Charger</a></li>
+				<li><a href="#">Contact</a></li>
 			</ul>
 		</div>
 	</header>
@@ -36,11 +41,11 @@
 				<tbody>
 					<tr th:each="extra: ${extra_charges}">
 						<td th:text="${extra.getID() }" />
-						<td th:text="${extra.getNetworkCall() }" />
-						<td th:text="${extra.getNetworkSMS() }" />
-						<td th:text="${extra.getCall() }" />
-						<td th:text="${extra.getSMS() }" />
-						<td th:text="${extra.getInternetTraffic() }" />
+						<td th:text="${extra.getNetworkCall()+' min' }" />
+						<td th:text="${extra.getNetworkSMS()+' SMS' }" />
+						<td th:text="${extra.getCall()+' min' }" />
+						<td th:text="${extra.getSMS()+' SMS' }" />
+						<td th:text="${extra.getInternetTraffic()+' MB' }" />
 						<td><span th:if="${extra.getExtra_ChargesType() == 1 }">Premium</span>
 							<span th:unless="${extra.getExtra_ChargesType() == 1 }">Standard</span>
 						</td>

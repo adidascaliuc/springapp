@@ -6,13 +6,19 @@
 </head>
 <body>
 	<header class="header">
-		<div role="navigation">
-			<ul>
-				<li><a href="/">Home</a></li>
-				<li class="active"><a href="/table/clients">All Clients</a></li>
-				<li><a href="/table/subscriptions">Subscription</a></li>
-				<li><a href="/table/extra_charges">Extra Charges</a></li>
-
+		<div role="navigation" class="wrapper">
+			<ul class="nav navbar-nav">
+				<li><a href="/" class="navbar-brand">Home</a></li>
+				
+				<li class="active" ><a href="#">Servicies</a>
+					<ul class="ul-inside">
+						<li><a href="/table/clients">All Clients</a></li>
+						<li><a href="/table/subscriptions">Subscription</a></li>
+						<li><a href="/table/extra_charges">Extra Charges</a></li>
+					</ul>
+				</li>
+				<li><a href="/simulate">Simulate Charger</a></li>
+				<li><a href="#">Contact</a></li>
 			</ul>
 		</div>
 	</header >
@@ -38,20 +44,18 @@
 						<td th:text="${client.getName() }" />
 						<td th:text="${client.getAddress() }" />
 						<td th:text="${client.getPhone() }" />
-						<td th:text="${client.getBalance()}" />
+						<td th:text="${client.getBalance()+' $' }" />
 						<td><span th:if="${client.getSubscriptionType() == 1 }">Premium</span>
 							<span th:unless="${client.getSubscriptionType() == 1 }">Standard</span>
 						</td>
-						<td><span th:if="${client.getExtra_ChargesType() == 1 }">Premium</span>
-							<span th:unless="${client.getExtra_ChargesType() == 1 }">Standard</span>
+						<td><span th:if="${client.getExtraChargesType() == 1 }">Premium</span>
+							<span th:unless="${client.getExtraChargesType() == 1 }">Standard</span>
 						</td>
-						<td><a th:href="@{/modify/client(id=${client.getID()})}">Modify</a></td>
+						<td><a th:href="@{/modify/client(id=${client.getID() })}">Modify</a></td>
 					</tr>
 				</tbody>
 			</table>
 		</div>
 	</div>
-
-
 </body>
 </html>

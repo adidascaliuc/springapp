@@ -1,5 +1,8 @@
 package ro.dascaliucadi.springapp.bootstrap;
 
+import java.util.Calendar;
+
+import org.joda.time.LocalDate;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
@@ -16,7 +19,7 @@ import ro.dascaliucadi.springapp.subscription.SubscriptionsRepository;
 public class BootStrapData implements CommandLineRunner {
 
 	private Subscriptions s1, s2;
-	private Extra_Charges e1, e2;
+	private Extra_Charges e1;
 	private Clients c1, c2, c3;
 	
 	private final ClientsRepository clientRepository;
@@ -41,29 +44,24 @@ public class BootStrapData implements CommandLineRunner {
 		s2.setID(2);
 		subscriptionsRepository.save(s2);
 		
-		
-		e1 = new Extra_Charges(Extra_ChargesEnum.standard);
-		e1.setID(1);
+		e1 = new Extra_Charges();
+		e1.setExtra_ChargesType(1);
+		e1.setID(1);;
 		extra_chargesRepository.save(e1);
-		
-		e2 = new Extra_Charges(Extra_ChargesEnum.premium);
-		e2.setID(2);
-		extra_chargesRepository.save(e2);
-		
 		
 		c1 = new Clients("Dascaliuc Adi", "Suceava", 800.78, "0743887339");
 		c1.setSubscriptionType(s1.getSubscriptionType());
-		c1.setExtra_ChargesType(e1.getExtra_ChargesType());
+		c1.setExtraChargesType(e1.getExtra_ChargesType());
 		clientRepository.save(c1);
 		
 		c2 = new Clients("Vasilescu Vasile", "Cluj", 777.77, "0213698574");
 		c2.setSubscriptionType(s2.getSubscriptionType());
-		c2.setExtra_ChargesType(e2.getExtra_ChargesType());
+		c2.setExtraChargesType(e1.getExtra_ChargesType());
 		clientRepository.save(c2);
 		
 		c3 = new Clients("Stefanescu Stefan", "Brasov", 34.56, "0216983574");
 		c3.setSubscriptionType(s1.getSubscriptionType());
-		c3.setExtra_ChargesType(e2.getExtra_ChargesType());
+		c3.setExtraChargesType(e1.getExtra_ChargesType());
 		clientRepository.save(c3);
 		
 		System.out.println("Loaded " + subscriptionsRepository.count() + " subscriptions.");

@@ -1,0 +1,58 @@
+<!DOCTYPE html >
+<html xmlns:th="http://thymeleaf.org">
+<head>
+<title>History Calls</title>
+<link href="/css/main.css" rel="stylesheet" type="text/css">
+</head>
+<body>
+	<header class="header">
+		<div role="navigation" class="wrapper">
+			<ul class="nav navbar-nav">
+				<li class="active"><a href="/" class="navbar-brand">Home</a></li>
+				
+				<li><a href="#">Servicies</a>
+					<ul class="ul-inside">
+						<li><a href="/table/clients">All Clients</a></li>
+						<li><a href="/table/subscriptions">Subscription</a></li>
+						<li><a href="/table/extra_charges">Extra Charges</a></li>
+					</ul>
+				</li>
+				<li><a href="/simulate">Simulate Charger</a></li>
+				<li><a href="#">Contact</a></li>
+			</ul>
+		</div>
+	</header >
+
+	<div class="border">
+		<div>
+			<table class="table-bordered">
+				<thead>
+					<tr>
+						<th>Id</th>
+						<th>Client Id</th>
+						<th>Make Call</th>
+						<th>Receive Call</th>
+						<th>Date Start</th>
+						<th>Date End</th>
+						<th>Minutes Consumes</th>
+						<th>Call Type</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr th:each="call : ${calls}">
+						<td th:text="${call.getID() }" />
+						<td th:text="${call.getClientId() }" />
+						<td th:text="${call.getMakeCall() }"/>
+						<td th:text="${call.getReceiveCall() }" />
+						<td th:text="${call.getStartCall() }" />
+						<td th:text="${call.getEndCall() }" />
+						<td th:text="${call.getCallMinutes()+' min' }" />
+						<td th:text="${call.getCallType()}" />
+						
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	</div>
+</body>
+</html>

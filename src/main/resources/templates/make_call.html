@@ -1,11 +1,11 @@
 <!DOCTYPE html >
 <html xmlns:th="http://thymeleaf.org">
 <head>
-<title>Home</title>
+<title>Simulation Phone</title>
 <link href="/css/main.css" rel="stylesheet" type="text/css">
 </head>
 <body>
-	<header class="home-header">
+	<header>
 		<div role="navigation" class="wrapper">
 			<ul class="nav navbar-nav">
 				<li class="active"><a href="/" class="navbar-brand">Home</a></li>
@@ -21,8 +21,16 @@
 				<li><a href="#">Contact</a></li>
 			</ul>
 		</div>
-		<p class="p-home">Welcome to our page</p>
 	</header>
+	<p class="message">This is simulation for phone call.</p>
+	
+	<form action="#" th:action="@{/simulate/phone-call/end}" th:object="${client}" method="post">
+		<span class="startAtMessage">Start at:</span><span class="dateStart" th:text="${client.getCallHistory().getStartCall() }" th:field="*{callHistory}"></span><br>
+		<span class="endAtMessage">End at: the call is still running...</span><br>
 
+		<button type="submit"><img class="endCallButton" /></button>
+	</form>
+		
+	<div class="inCall"></div>
 </body>
 </html>

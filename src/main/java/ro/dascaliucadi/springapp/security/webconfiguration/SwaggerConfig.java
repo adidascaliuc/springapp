@@ -3,6 +3,7 @@ package ro.dascaliucadi.springapp.security.webconfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+import ro.dascaliucadi.springapp.simulation_history.CDR;
 import springfox.documentation.builders.PathSelectors;
 import springfox.documentation.builders.RequestHandlerSelectors;
 import springfox.documentation.spi.DocumentationType;
@@ -19,5 +20,10 @@ public class SwaggerConfig {
           .apis( RequestHandlerSelectors.basePackage( "ro.dascaliucadi.springapp" ))              
           .paths( PathSelectors.any())                          
           .build();                                           
+    }
+    
+    @Bean
+    public CDR method() {
+    	return new CDR();
     }
 }

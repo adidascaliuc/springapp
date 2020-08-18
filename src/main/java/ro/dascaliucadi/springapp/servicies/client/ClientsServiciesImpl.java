@@ -76,5 +76,15 @@ public class ClientsServiciesImpl implements ClientsServicies {
 		}
 		return null;
 	}
+	
+	@Override
+	public Clients getByPhoneNumber(String phone) {
+		for(Clients client : clientRepository.findAll()) {
+			if(client.getPhone().equals(phone)) {
+				return client;
+			}
+		}
+		return null;
+	}
 
 }

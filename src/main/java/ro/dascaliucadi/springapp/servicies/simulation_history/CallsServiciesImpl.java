@@ -3,6 +3,7 @@ package ro.dascaliucadi.springapp.servicies.simulation_history;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.joda.time.DateTime;
 import org.springframework.stereotype.Service;
 
 import ro.dascaliucadi.springapp.clients.Clients;
@@ -60,7 +61,7 @@ public class CallsServiciesImpl implements CallsServicies {
 	}
 	
 	@Override
-	public List<CallsHistory> getAllCallsById(int id) {
+	public List<CallsHistory> getAllCallsByClientId(int id) {
 		List<CallsHistory> calls = new ArrayList<CallsHistory>();
 		for (CallsHistory c : callsRepository.findAll()) {
 			if (id == c.getClientId()) {

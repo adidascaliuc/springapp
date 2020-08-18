@@ -1,17 +1,15 @@
 package ro.dascaliucadi.springapp.bootstrap;
 
-import java.util.Calendar;
-
-import org.joda.time.LocalDate;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
 import ro.dascaliucadi.springapp.clients.Clients;
 import ro.dascaliucadi.springapp.clients.ClientsRepository;
-import ro.dascaliucadi.springapp.enumerari.Extra_ChargesEnum;
 import ro.dascaliucadi.springapp.enumerari.SubscriptionsEnum;
 import ro.dascaliucadi.springapp.extra_charges.Extra_Charges;
 import ro.dascaliucadi.springapp.extra_charges.Extra_ChargesRepository;
+import ro.dascaliucadi.springapp.simulation_history.CDR;
+import ro.dascaliucadi.springapp.simulation_history.CDRRepository;
 import ro.dascaliucadi.springapp.subscription.Subscriptions;
 import ro.dascaliucadi.springapp.subscription.SubscriptionsRepository;
 
@@ -21,26 +19,29 @@ public class BootStrapData implements CommandLineRunner {
 	private Subscriptions s1, s2;
 	private Extra_Charges e1;
 	private Clients c1, c2, c3;
+	private CDR cdr;
 	
 	private final ClientsRepository clientRepository;
 	private final Extra_ChargesRepository extra_chargesRepository;
 	private final SubscriptionsRepository subscriptionsRepository;
+	private final CDRRepository cdrRepository;
 	
-	public BootStrapData(ClientsRepository clientRepository, Extra_ChargesRepository extra_chargesRepository, SubscriptionsRepository subscriptionsRepository) {
+	public BootStrapData(ClientsRepository clientRepository, Extra_ChargesRepository extra_chargesRepository, SubscriptionsRepository subscriptionsRepository, CDRRepository cdrRepository) {
 		this.clientRepository = clientRepository;
 		this.extra_chargesRepository = extra_chargesRepository;
 		this.subscriptionsRepository = subscriptionsRepository;
+		this.cdrRepository = cdrRepository;
 		
 	}
 	@Override
 	public void run(String... args) throws Exception {
 		System.out.println("Loading Clients data...");
 		
-		s1 = new Subscriptions(SubscriptionsEnum.standard);
+		s1 = new Subscriptions(SubscriptionsEnum.Standard);
 		s1.setID(1);
 		subscriptionsRepository.save(s1);
 		
-		s2 = new Subscriptions(SubscriptionsEnum.premium);
+		s2 = new Subscriptions(SubscriptionsEnum.Premium);
 		s2.setID(2);
 		subscriptionsRepository.save(s2);
 		
@@ -64,9 +65,13 @@ public class BootStrapData implements CommandLineRunner {
 		c3.setExtraChargesType(e1.getExtra_ChargesType());
 		clientRepository.save(c3);
 		
+		cdr = new CDR();
+		cdrRepository.save(cdr);
+		
 		System.out.println("Loaded " + subscriptionsRepository.count() + " subscriptions.");
 		System.out.println("Loaded " + extra_chargesRepository.count() + " extra charges.");
 		System.out.println("Loaded " + clientRepository.count() + " clients.");
+		System.out.println("Loaded " + cdrRepository.count() + " cdr's.");
 		
 	}
 }

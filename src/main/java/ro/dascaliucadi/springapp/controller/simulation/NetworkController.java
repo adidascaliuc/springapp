@@ -7,6 +7,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
+import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -17,6 +18,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import ro.dascaliucadi.springapp.clients.Clients;
 import ro.dascaliucadi.springapp.servicies.client.ClientsServicies;
 import ro.dascaliucadi.springapp.servicies.simulation_history.NetworkServicies;
+import ro.dascaliucadi.springapp.simulation_history.NetworkHistory;
 
 @Controller
 public class NetworkController {
@@ -25,6 +27,8 @@ public class NetworkController {
 
 	private Date dateStart = null;
 	private Date dateEnd = null;
+
+	private long addMB = 0;
 
 	private String networkType = null;
 
@@ -36,20 +40,21 @@ public class NetworkController {
 
 	public NetworkController(ClientsServicies clientServicies, NetworkServicies networkServicies) {
 		this.clientServicies = clientServicies;
-		// TODO Auto-generated constructor stub
 		this.networkServicies = networkServicies;
 	}
 
 	@PostMapping("/simulate/network-traffic")
 	public String responseNetworkTraffic(@ModelAttribute("client") Clients client) {
-		String phoneNumber = client.getPhone().split(",")[0];
-
-		System.out.println("Phone: " + client.getPhone());
+		addMB = client.getNetworkHistory().getMinutesSpend();
+		
+		client.setNetworkHistory(new NetworkHistory());
 
 		client.getNetworkHistory().setTrafficStart();
-		networkType = client.getNetworkHistory().getTrafficType();
+		
+		String phoneNumber = client.getPhone().split(",")[0];
 
 		clientNetwork = clientServicies.findClientByPhone(phoneNumber);
+		clientNetwork.setNetworkHistory(new NetworkHistory());
 		clientNetwork.getNetworkHistory().setTrafficStart();
 
 		return "turnOn_networkTraffic";
@@ -74,7 +79,7 @@ public class NetworkController {
 		long minSpend = minutes == 0 ? 1 : minutes;
 
 		networkServicies.addNetwork(clientNetwork, clientNetwork.getNetworkHistory().getTrafficStart(),
-				clientNetwork.getNetworkHistory().getTrafficEnd(), minSpend, networkType);
+				clientNetwork.getNetworkHistory().getTrafficEnd(), minSpend + addMB, networkType);
 		return "homepage";
 	}
 
@@ -89,10 +94,10 @@ public class NetworkController {
 	@GetMapping("/simulate/network-traffic")
 	public String simulateNetworkTraffic(Model model) {
 		List<String> netType = new ArrayList<String>();
-		netType.add("read");
-		netType.add("games");
-		netType.add("stream");
-		netType.add("video");
+		netType.add("Read");
+		netType.add("Games");
+		netType.add("Stream");
+		netType.add("Video");
 
 		model.addAttribute("client", new Clients());
 		model.addAttribute("netType", netType);

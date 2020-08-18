@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://thymeleaf.org">
+<head>
+<meta charset="utf-8">
+<title>Example 1</title>
+<link rel="stylesheet" href="style.css" media="all" />
+
+<style>
+.clearfix:after {
+	content: "";
+	display: table;
+	clear: both;
+}
+
+a {
+	color: #5D6975;
+	text-decoration: underline;
+}
+
+body {
+	position: relative;
+	width: 21cm;
+	height: 29.7cm;
+	margin: 0 auto;
+	color: #001028;
+	background: #FFFFFF;
+	font-family: Arial, sans-serif;
+	font-size: 12px;
+	font-family: Arial;
+}
+
+.forSpan {
+	text-align: right;
+	font-size: 20px;
+}
+
+.thWidth {
+	max-width: 100px;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+}
+
+header {
+	padding: 10px 0;
+	margin-bottom: 30px;
+}
+
+#logo {
+	text-align: center;
+	margin-bottom: 10px;
+}
+
+#logo img {
+	width: 90px;
+}
+
+h1 {
+	border-top: 1px solid #5D6975;
+	border-bottom: 1px solid #5D6975;
+	color: #5D6975;
+	font-size: 2.4em;
+	line-height: 1.4em;
+	font-weight: normal;
+	text-align: center;
+	margin: 0 0 20px 0;
+	background: url(../dimension.png);
+}
+
+#project {
+	float: left;
+}
+
+#project span {
+	color: #5D6975;
+	text-align: right;
+	width: 52px;
+	margin-right: 10px;
+	display: inline-block;
+	font-size: 0.8em;
+}
+
+#company {
+	float: right;
+	text-align: right;
+}
+
+#project div, #company div {
+	white-space: nowrap;
+}
+
+table {
+	width: 100%;
+	border-collapse: collapse;
+	border-spacing: 0;
+	margin-bottom: 20px;
+}
+
+table tr:nth-child(2n-1) td {
+	background: #F5F5F5;
+}
+
+table th, table td {
+	text-align: center;
+}
+
+table th {
+	padding: 5px 5px;
+	color: #5D6975;
+	border-bottom: 1px solid #C1CED9;
+	white-space: nowrap;
+	font-weight: normal;
+}
+
+table .service, table .desc {
+	text-align: left;
+}
+
+table td {
+	padding: 20px;
+	text-align: right;
+}
+
+table td.service, table td.desc {
+	vertical-align: top;
+}
+
+table td.unit, table td.qty, table td.total {
+	font-size: 1.2em;
+}
+
+table td.grand {
+	border-top: 1px solid #5D6975;;
+}
+
+#notices .notice {
+	color: #5D6975;
+	font-size: 1.2em;
+}
+
+footer {
+	color: #5D6975;
+	width: 100%;
+	height: 30px;
+	position: absolute;
+	bottom: 0;
+	border-top: 1px solid #C1CED9;
+	padding: 8px 0;
+	text-align: center;
+}
+</style>
+
+</head>
+<body>
+	<header class="clearfix">
+		<div id="logo">
+			<img src="logo.png">
+		</div>
+		<h1>Subscription INVOICE</h1>
+		<div id="company" class="clearfix">
+			<div>Company Name</div>
+			<div>
+				Charger Srl,<br /> Calafindesti 1234, Suceava
+			</div>
+			<div>(0743) 887-339</div>
+			<div>adi.dascaliuc1@gmai.com</div>
+		</div>
+		<div id="project">
+			<div>
+				<span th:text="${'CLIENT ID: ' + client.getID() }"></span>
+			</div>
+			<div>
+				<span th:text="${'CLIENT NAME: ' + client.getName() }"></span>
+			</div>
+			<div>
+				<span th:text="${'CLIENT ADDRESS: ' + client.getAddress() }"></span>
+			</div>
+			<div>
+				<span th:text="${'DATE: ' + payMonth }"></span>
+			</div>
+			<div>
+				<span th:text="${'DUE DATE: ' + dueMonth }"></span>
+			</div>
+		</div>
+	</header>
+
+	<main> <!-- Calls History --> <span class="forSpan">For
+		Calls</span>
+	<table>
+		<thead>
+			<tr>
+				<th>Id</th>
+				<th>Client Id</th>
+				<th>Make Call</th>
+				<th>Receive Call</th>
+				<th>Start Call</th>
+				<th>End Call</th>
+				<th>Call Minutes</th>
+				<th>Call Type</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr th:each="call :  ${calls}">
+				<td th:text="${call.getID() }" />
+				<td th:text="${call.getClientId() }" />
+				<td th:text="${call.getMakeCall() }" />
+				<td th:text="${call.getReceiveCall() }" />
+				<td th:text="${call.getStartCall() }" />
+				<td th:text="${call.getEndCall() }" />
+				<td th:text="${call.getCallMinutes() }" />
+				<td th:text="${call.getCallType() }" />
+			</tr>
+		</tbody>
+	</table>
+
+
+	<!--  Sms History --> <span class="forSpan">For Sms</span>
+	<table>
+		<thead>
+			<tr>
+				<th>Id</th>
+				<th>Client Id</th>
+				<th>Sent Sms</th>
+				<th>Receive Sms</th>
+				<th>Data Sms Sent</th>
+				<th>Nr Of Sms</th>
+				<th>Sms Type</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr th:each="sms: ${smss}">
+				<td th:text="${sms.getID() }" />
+				<td th:text="${sms.getClientId() }" />
+				<td th:text="${sms.getSentSms() }" />
+				<td th:text="${sms.getReceiveSms() }" />			
+				<td th:text="${sms.getDateSmsSent() }" />
+				<td th:text="${sms.getNrOfSms() }" />
+				<td th:text="${sms.getSmsType() }" />		
+			</tr>
+		</tbody>
+	</table>
+
+	<!-- Network History --> <span class="forSpan">For Network</span>
+	<table>
+		<thead>
+			<tr>
+				<th>Id</th>
+				<th>Client Id</th>
+				<th>Phone Number</th>
+				<th>Traffic Start</th>
+				<th>Traffic End</th>
+				<th>Minutes Spend</th>
+				<th>Traffic Type</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr th:each="net: ${networks}">
+				<td th:text="${net.getID() }" />
+				<td th:text="${net.getClientId() }" />
+				<td th:text="${net.getPhoneNumber() }" />
+				<td th:text="${net.getTrafficStart() }" />
+				<td th:text="${net.getTrafficEnd() }" />
+				<td th:text="${net.getMinutesSpend() }" />
+				<td th:text="${net.getTrafficType() }" />
+			</tr>
+		</tbody>
+	</table>
+
+	<!-- Subscription  --> <span class="forSpan">Subscription</span>
+	<table class="table-bordered">
+		<thead>
+			<tr>
+				<th class="thWidth">Id</th>
+				<th class="thWidth">Minutes Included</th>
+				<th class="thWidth">Sms Included</th>
+				<th class="thWidth">Network Minutes Included</th>
+				<th class="thWidth">Network Sms Included</th>
+				<th class="thWidth">Traffic Included</th>
+				<th class="thWidth">Subscription Type</th>
+				<th class="thWidth">Monthly Cost</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr>
+				<td th:text="${sub.getID() }" />
+				<td th:text="${sub.getMinutesIncluded() }" />
+				<td th:text="${sub.getSMSIncluded() }" />
+				<td th:text="${sub.getNetworkMinutesIncluded() }" />
+				<td th:text="${sub.getNetworkSMSIncluded() }" />
+				<td th:text="${sub.getTrafficIncluded() }" />
+				<td th:text="${sub.getSubscriptionType() }" />
+				<td th:text="${sub.getMonthlyCost() + ' $' }" />
+			</tr>
+		</tbody>
+	</table>
+	
+	<!-- Extra Charges  --> <span class="forSpan">Extra Charges</span>
+	<table class="table-bordered">
+		<thead>
+			<tr>
+				<th class="thWidth">Id</th>
+				<th class="thWidth">Call</th>
+				<th class="thWidth">Sms</th>
+				<th class="thWidth">Network Call</th>
+				<th class="thWidth">Network Sms</th>
+				<th class="thWidth">Internet Traffic</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr th:each="extra : ${extra_charges}">
+				<td th:text="${extra.getID() }" />
+				<td th:text="${extra.getCall() }" />
+				<td th:text="${extra.getSMS() }" />
+				<td th:text="${extra.getNetworkCall() }" />
+				<td th:text="${extra.getNetworkSMS() }" />
+				<td th:text="${extra.getInternetTraffic() }" />
+			</tr>
+		</tbody>
+	</table>
+
+	<span style="text-align: right;">Total: </span> </main>
+	<footer>
+		Invoice create for user <span th:text="${client.getName() }"></span>.
+	</footer>
+</body>
+</html>

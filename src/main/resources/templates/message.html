@@ -15,9 +15,11 @@
 						<li><a href="/table/clients">All Clients</a></li>
 						<li><a href="/table/subscriptions">Subscription</a></li>
 						<li><a href="/table/extra_charges">Extra Charges</a></li>
+						<li><a href="/table/cdr">CRD</a></li>
 					</ul>
 				</li>
 				<li><a href="/simulate">Simulate Charger</a></li>
+				<li><a href="/invoice">Invoice</a></li>
 				<li><a href="#">Contact</a></li>
 			</ul>
 		</div>
@@ -38,6 +40,9 @@
 		</select><br>
 		
 		<input class="txtMessage"  type="text" name="txtMessage">
+		
+		<label class="labelAddSms">Add sent sms: </label>
+		<input type="text" th:field="*{smsHistory.NrOfSms}" />
 		
 		<button type="submit"><img class="buttonSendImage" /></button>
 	</form>

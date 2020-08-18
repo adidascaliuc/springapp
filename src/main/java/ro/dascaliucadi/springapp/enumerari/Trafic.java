@@ -1,6 +1,8 @@
 package ro.dascaliucadi.springapp.enumerari;
 
 public enum Trafic {
-	Date,
-	Internet
+	Read,
+	Stream,
+	Games,
+	Video
 }

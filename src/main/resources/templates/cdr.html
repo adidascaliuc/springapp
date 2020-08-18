@@ -1,11 +1,11 @@
 <!DOCTYPE html >
 <html xmlns:th="http://thymeleaf.org">
 <head>
-<title>Home</title>
+<title>CDR</title>
 <link href="/css/main.css" rel="stylesheet" type="text/css">
 </head>
 <body>
-	<header class="home-header">
+	<header class="header">
 		<div role="navigation" class="wrapper">
 			<ul class="nav navbar-nav">
 				<li class="active"><a href="/" class="navbar-brand">Home</a></li>
@@ -23,8 +23,33 @@
 				<li><a href="#">Contact</a></li>
 			</ul>
 		</div>
-		<p class="p-home">Welcome to our page</p>
-	</header>
+	</header >
 
+	<div class="border">
+		<div>
+			<table class="table-bordered">
+				<thead>
+					<tr>
+						<th>Id</th>
+						<th>Per Call Minute</th>
+						<th>Per Sms</th>
+						<th>Per Network Call Minute</th>
+						<th>Per Network Sms</th>
+						<th>Per Mb</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr th:each="cdr : ${cdrs}">
+						<td th:text="${cdr.getID()+' $' }" />
+						<td th:text="${cdr.getPerCallMinute()+' $' }" />
+						<td th:text="${cdr.getPerSms()+' $' }"/>
+						<td th:text="${cdr.getPerNetworkCallMinute()+' $' }" />
+						<td th:text="${cdr.getPerNetworkSms()+' $' }" />
+						<td th:text="${cdr.getPerMbInternetTraffic()+' $' }" />
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	</div>
 </body>
 </html>

@@ -10,6 +10,10 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import org.joda.time.DateTime;
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
+
 @Entity
 @Table(name = "sms_history")
 public class SmsHistory {
@@ -23,10 +27,10 @@ public class SmsHistory {
 	private int ClientId;
 
 	@Column(name = "receive_sms")
-	String ReceiveSms;
+	private String ReceiveSms;
 
 	@Column(name = "sent_sms")
-	String SentSms;
+	private String SentSms;
 
 	@Column(name = "date_sms_sent")
 	private String DateSmsSent;
@@ -65,7 +69,8 @@ public class SmsHistory {
 	}
 
 	public void setDateSmsSent() {
-		DateSmsSent = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss").format(Calendar.getInstance().getTime());
+		this.DateSmsSent = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss").format(Calendar.getInstance().getTime());
+		
 	}
 
 	public String getReceiveSms() {
@@ -74,10 +79,6 @@ public class SmsHistory {
 
 	public void setReceiveSms(String receiveSms) {
 		ReceiveSms = receiveSms;
-	}
-
-	public void setReceiveSms() {
-		ReceiveSms = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss").format(Calendar.getInstance().getTime());
 	}
 
 	public String getSentSms() {

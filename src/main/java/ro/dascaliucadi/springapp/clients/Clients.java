@@ -1,8 +1,5 @@
 package ro.dascaliucadi.springapp.clients;
 
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -15,7 +12,6 @@ import javax.persistence.Table;
 import javax.persistence.Transient;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import com.sun.istack.NotNull;
 
 import ro.dascaliucadi.springapp.extra_charges.Extra_Charges;
@@ -65,7 +61,7 @@ public class Clients {
 	private SmsHistory smsHistory;
 
 	@Transient
-	private NetworkHistory networkHistory = new NetworkHistory();
+	private NetworkHistory networkHistory;
 
 	@JsonIgnore
 	@ManyToOne(fetch = FetchType.LAZY, optional = false)
@@ -76,6 +72,8 @@ public class Clients {
 	@ManyToOne(fetch = FetchType.LAZY, optional = false)
 	@JoinColumn(name = "extra_charges_type", updatable = false, insertable = false)
 	public Extra_Charges extra_charges;
+	
+	
 
 	public Clients() {
 	}

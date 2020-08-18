@@ -5,6 +5,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.concurrent.TimeUnit;
 
+import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -26,6 +27,8 @@ public class PhoneCallController {
 
 	private Date dateStart = null;
 	private Date dateEnd = null;
+
+	private long minAdd = 0;
 
 	@Autowired
 	private final CallsServicies callsServicies;
@@ -51,6 +54,7 @@ public class PhoneCallController {
 
 	@PostMapping("/simulate/phone-call")
 	public String phoneCallResponse(@ModelAttribute("client") Clients client) {
+		minAdd = client.getCallHistory().getCallMinutes();
 		client.setCallHistory(new CallsHistory());
 
 		client.getCallHistory().setStartCall();
@@ -96,9 +100,9 @@ public class PhoneCallController {
 		long minSpend = minutes == 0 ? 1 : minutes;
 
 		callsServicies.addCall(clientOnePhone, clientTwoPhone.getPhone(),
-				clientOnePhone.getCallHistory().getStartCall(), clientOnePhone.getCallHistory().getEndCall(), minSpend,
-				clientOnePhone.getCallHistory().getCallType());
-		
+				clientOnePhone.getCallHistory().getStartCall(), clientOnePhone.getCallHistory().getEndCall(),
+				minSpend + minAdd, clientOnePhone.getCallHistory().getCallType());
+
 		clientServicies.updateClient(clientOnePhone);
 
 		return "homepage";

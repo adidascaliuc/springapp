@@ -10,6 +10,7 @@ public interface ClientsServicies {
 	Clients findClientByPhone(String phoneNumber);
 	Clients saveClient(Clients client);
 	Clients addClient(Clients newClient);
+	Clients getByPhoneNumber(String phone);
 	
 	List<Clients> findAllClients();
 	List<Clients> getAllClients();

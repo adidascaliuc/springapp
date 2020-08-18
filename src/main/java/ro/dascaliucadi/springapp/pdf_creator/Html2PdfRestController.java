@@ -1,8 +1,6 @@
 package ro.dascaliucadi.springapp.pdf_creator;
 
 import java.text.DateFormatSymbols;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
 import java.util.Map;
 
 import org.joda.time.LocalDate;
@@ -11,13 +9,14 @@ import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import lombok.RequiredArgsConstructor;
+import ro.dascaliucadi.springapp.clients.Clients;
 import ro.dascaliucadi.springapp.servicies.client.ClientsServicies;
+import ro.dascaliucadi.springapp.servicies.extra_charges.Extra_ChargesServicies;
 import ro.dascaliucadi.springapp.servicies.simulation_history.CallsServicies;
 import ro.dascaliucadi.springapp.servicies.simulation_history.NetworkServicies;
 import ro.dascaliucadi.springapp.servicies.simulation_history.SmsServicies;
@@ -35,6 +34,9 @@ public class Html2PdfRestController {
 
 	@Autowired
 	private ClientsServicies clientServicies;
+	
+	@Autowired
+	private Extra_ChargesServicies extra_chargesServicies;
 
 	@Autowired
 	private CallsServicies callServicies;
@@ -45,9 +47,10 @@ public class Html2PdfRestController {
 	@Autowired
 	private NetworkServicies networkServicies;
 
-	@RequestMapping(value = "/invoice/{id}", method = RequestMethod.GET, produces = "application/pdf")
-	public ResponseEntity html2pdf(@PathVariable int id, Model model, Map<String, Object> data) {
-
+	@PostMapping(value = "/invoice", produces = "application/pdf")
+	public ResponseEntity<InputStreamResource> html2pdf(@ModelAttribute("client") Clients client, Model model, Map<String, Object> data) {
+		int id = clientServicies.getByPhoneNumber(client.getPhone()).getID();
+		
 		LocalDate localDate = new LocalDate();
 		String payMonth = "01-" + localDate.toString("MMMM")+ "-" + localDate.getYear();
 		String dueMonth = "01-"  + new DateFormatSymbols().getMonths()[localDate.getMonthOfYear()] + "-" + localDate.getYear();
@@ -55,10 +58,10 @@ public class Html2PdfRestController {
 		model.addAttribute("payMonth", payMonth);
 		model.addAttribute("dueMonth", dueMonth);
 		
-		model.addAttribute("extra_charges", clientServicies.findClientByID(id).getExtra_charges());
+		model.addAttribute("extra_charges", extra_chargesServicies.getAllExtra_ChargesByClientId(id));
 		model.addAttribute("sub", clientServicies.findClientByID(id).getSubscription());
 		model.addAttribute("client", clientServicies.findClientByID(id));
-		model.addAttribute("calls", callServicies.getAllCallsById(id));
+		model.addAttribute("calls", callServicies.getAllCallsByClientId(id));
 		model.addAttribute("smss", smsServicies.getAllSmsById(id));
 		model.addAttribute("networks", networkServicies.getAllNetworkById(id));
 
@@ -67,7 +70,7 @@ public class Html2PdfRestController {
 		if (resource != null) {
 			return ResponseEntity.ok().body(resource);
 		} else {
-			return new ResponseEntity(HttpStatus.SERVICE_UNAVAILABLE);
+			return new ResponseEntity<InputStreamResource>(HttpStatus.SERVICE_UNAVAILABLE);
 		}
 
 	}

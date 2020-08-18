@@ -10,12 +10,10 @@ import javax.persistence.Transient;
 
 import com.sun.istack.NotNull;
 
-import ro.dascaliucadi.springapp.enumerari.Extra_ChargesEnum;
-
 @Entity
 @Table(name = "extra_charges")
 public class Extra_Charges {
-	
+
 	@Transient
 	private final String PREMIUM = "Premium";
 	@Transient
@@ -23,11 +21,14 @@ public class Extra_Charges {
 
 	@Id
 	@Column(name = "id")
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int ID;
-	
+
+	@Column(name = "client_id")
+	private int ClientId;
+
 	@NotNull
-	@Column(name="extra_charges_type")
+	@Column(name = "extra_charges_type")
 	private int Extra_ChargesType;
 
 	@NotNull
@@ -51,12 +52,12 @@ public class Extra_Charges {
 	private double InternetTraffic;
 
 	public Extra_Charges() {
-			this.setCall(0);
-			this.setInternetTraffic(0);
-			this.setNetworkCall(0);
-			this.setNetworkSMS(0);
-			this.setSMS(0);
-			this.setExtra_ChargesType(1);
+		this.setCall(0);
+		this.setInternetTraffic(0);
+		this.setNetworkCall(0);
+		this.setNetworkSMS(0);
+		this.setSMS(0);
+		this.setExtra_ChargesType(1);
 	}
 
 	public int getID() {
@@ -65,6 +66,14 @@ public class Extra_Charges {
 
 	public void setID(int Id) {
 		ID = Id;
+	}
+
+	public int getClientId() {
+		return ClientId;
+	}
+
+	public void setClientId(int clientId) {
+		ClientId = clientId;
 	}
 
 	public int getExtra_ChargesType() {

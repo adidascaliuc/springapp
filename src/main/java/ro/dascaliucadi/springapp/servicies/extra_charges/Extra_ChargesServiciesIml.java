@@ -1,20 +1,30 @@
 package ro.dascaliucadi.springapp.servicies.extra_charges;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
+import org.joda.time.DateTime;
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.stereotype.Service;
 
+import ro.dascaliucadi.springapp.clients.Clients;
 import ro.dascaliucadi.springapp.extra_charges.Extra_Charges;
 import ro.dascaliucadi.springapp.extra_charges.Extra_ChargesRepository;
+import ro.dascaliucadi.springapp.simulation_history.CDR;
 
 @Service
+@ComponentScan
 public class Extra_ChargesServiciesIml implements Extra_ChargesServicies{
 
 	private final Extra_ChargesRepository extra_chargesRepository;
+	private final CDR cdr;
 	
-	public Extra_ChargesServiciesIml(Extra_ChargesRepository extra_chargesRepository) {
+	public Extra_ChargesServiciesIml(Extra_ChargesRepository extra_chargesRepository, CDR cdr) {
 		this.extra_chargesRepository = extra_chargesRepository;
+		this.cdr = cdr;
 	}
 	
 	@Override
@@ -25,4 +35,50 @@ public class Extra_ChargesServiciesIml implements Extra_ChargesServicies{
 		}
 		return extra_chargeses;
 	}
+	
+	@Override
+	public List<Extra_Charges> getAllExtra_ChargesByClientId(int id) {
+		List<Extra_Charges> extra_charges = new ArrayList<Extra_Charges>();
+		for(Extra_Charges extra : extra_chargesRepository.findAll()) {
+			if(extra.getClientId() == id) {
+				extra_charges.add(extra);
+			}
+		}
+		return extra_charges;
+	}
+	
+	@Override
+	public void addExtra_Charges(Clients client, double call, double sms, double networkCall, double networkSms,
+			double internetTraffic) {
+		
+		Extra_Charges extra = new Extra_Charges();
+		extra.setCall(call * cdr.getPerCallMinute());
+		extra.setClientId(client.getID());
+		extra.setExtra_ChargesType(client.getExtraChargesType());
+		extra.setInternetTraffic(internetTraffic * cdr.getPerMbInternetTraffic());
+		extra.setNetworkCall(networkCall * cdr.getPerNetworkCallMinute());
+		extra.setNetworkSMS(networkSms * cdr.getPerNetworkSms());
+		extra.setSMS(sms * cdr.getPerSms());
+		
+		extra_chargesRepository.save(extra);
+	}
+	
+	@Override
+	public List<Extra_Charges> getAllExtra_ChargesByClientIdOrderByDate(int clientId, String startDate,
+			String endDate) {
+		DateTimeFormatter formatter = DateTimeFormat.forPattern("dd/MM/yyyy HH:mm:ss");
+		DateTime start = formatter.parseDateTime(startDate);
+		DateTime end = formatter.parseDateTime(endDate);
+		
+		List<Extra_Charges> extra_charges = new ArrayList<Extra_Charges>();
+		
+		for(Extra_Charges extra : extra_chargesRepository.findAll()) {
+			if( (extra.getClientId() == clientId)
+				) {
+				
+			}
+		}
+		return null;
+	}
+	
 }

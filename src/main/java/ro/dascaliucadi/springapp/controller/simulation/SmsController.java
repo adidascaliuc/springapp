@@ -18,6 +18,8 @@ public class SmsController {
 
 	private Clients clientOneSms = null;
 	private Clients clientTwoSms = null;
+	
+	private int addSms = 0;
 
 	@Autowired
 	private final ClientsServicies clientServicies;
@@ -43,6 +45,8 @@ public class SmsController {
 	@PostMapping("/simulate/message")
 	public String messageResponse(@ModelAttribute("client") Clients client) {
 
+		addSms = client.getSmsHistory().getNrOfSms();
+		
 		String firstNumber = client.getPhone().split(",")[0];
 		String secondNumber = client.getPhone().split(",")[1];
 		
@@ -70,7 +74,7 @@ public class SmsController {
 		smsClientCurrent.setNrOfSms(1);
 
 		smsServicies.addSms(clientOneSms, clientTwoSms.getPhone(), clientOneSms.getSmsHistory().getDateSmsSent(),
-				smsClientCurrent.getNrOfSms(), clientOneSms.getSmsHistory().getSmsType());
+				smsClientCurrent.getNrOfSms() + addSms, clientOneSms.getSmsHistory().getSmsType());
 		
 		clientServicies.updateClient(clientOneSms);
 

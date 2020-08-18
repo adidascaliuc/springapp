@@ -15,9 +15,11 @@
 						<li><a href="/table/clients">All Clients</a></li>
 						<li><a href="/table/subscriptions">Subscription</a></li>
 						<li><a href="/table/extra_charges">Extra Charges</a></li>
+						<li><a href="/table/cdr">CRD</a></li>
 					</ul>
 				</li>
 				<li><a href="/simulate">Simulate Charger</a></li>
+				<li><a href="/invoice">Invoice</a></li>
 				<li><a href="#">Contact</a></li>
 			</ul>
 		</div>
@@ -31,6 +33,9 @@
 		<select class="select-first" th:field="*{Phone}">
 			<option th:each="cl : ${clients }" th:value="${cl.getPhone() }" th:text="${cl.getPhone() }">
 		</select>
+		
+		<label class="labelAddMinutes">Add minutes to call: </label>
+		<input type="text" th:field="*{callHistory.callMinutes}" />
 		
 		<label class="labelPhoneCallMessageTo">To: </label>
 		<select class="select-second" th:field="*{Phone}">

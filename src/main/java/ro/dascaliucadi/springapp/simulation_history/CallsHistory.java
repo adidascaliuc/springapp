@@ -10,6 +10,10 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import org.joda.time.DateTime;
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
+
 @Entity
 @Table(name = "calls_history")
 public class CallsHistory {
@@ -35,7 +39,7 @@ public class CallsHistory {
 	private String endCall;
 
 	@Column(name = "call_minutes")
-	private long callMinutes;
+	public long callMinutes;
 
 	@Column(name = "call_type")
 	private String CallType;
@@ -76,11 +80,13 @@ public class CallsHistory {
 	}
 
 	public void setStartCall() {
+		
 		this.startCall = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss").format(Calendar.getInstance().getTime());
+
 	}
 
 	public String getEndCall() {
-		return endCall;
+		return this.endCall;
 	}
 
 	public void setEndCall(String endCall) {
@@ -89,6 +95,7 @@ public class CallsHistory {
 
 	public void setEndCall() {
 		this.endCall = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss").format(Calendar.getInstance().getTime());
+
 	}
 
 	public long getCallMinutes() {

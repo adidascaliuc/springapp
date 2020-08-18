@@ -60,7 +60,7 @@ public class Subscriptions {
 	
 	public Subscriptions(SubscriptionsEnum subscriptionType) {
 		
-		if(subscriptionType.equals(SubscriptionsEnum.premium)) {
+		if(subscriptionType.equals(SubscriptionsEnum.Premium)) {
 			this.setMinutesIncluded(1000);
 			this.setNetworkMinutesIncluded(500);
 			this.setNetworkSMSIncluded(300);

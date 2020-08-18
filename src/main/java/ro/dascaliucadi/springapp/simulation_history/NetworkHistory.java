@@ -10,6 +10,10 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import org.joda.time.DateTime;
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
+
 @Entity
 @Table(name = "network_history")
 public class NetworkHistory {
@@ -70,7 +74,8 @@ public class NetworkHistory {
 	}
 	
 	public void setTrafficStart() {
-		TrafficStart = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss").format(Calendar.getInstance().getTime());
+		this.TrafficStart = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss").format(Calendar.getInstance().getTime());
+		
 	}
 
 	public String getTrafficEnd() {
@@ -82,7 +87,8 @@ public class NetworkHistory {
 	}
 	
 	public void setTrafficEnd() {
-		TrafficEnd = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss").format(Calendar.getInstance().getTime());
+		this.TrafficEnd = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss").format(Calendar.getInstance().getTime());
+		
 	}
 
 	public long getMinutesSpend() {

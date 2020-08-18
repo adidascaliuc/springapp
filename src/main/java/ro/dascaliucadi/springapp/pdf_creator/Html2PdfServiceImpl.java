@@ -31,7 +31,7 @@ public class Html2PdfServiceImpl implements Html2PdfService {
 	public InputStreamResource generateInvoice(Map<String, Object> data) {
 		Context context = new Context();
 		context.setVariables(data);
-		String html = templateEngine.process("invoice", context);
+		String html = templateEngine.process("invoicePDF", context);
 
 		try {
 			HtmlConverter.convertToPdf(html, new FileOutputStream("target/test.pdf"));

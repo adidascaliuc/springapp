@@ -15,9 +15,11 @@
 						<li><a href="/table/clients">All Clients</a></li>
 						<li><a href="/table/subscriptions">Subscription</a></li>
 						<li><a href="/table/extra_charges">Extra Charges</a></li>
+						<li><a href="/table/cdr">CRD</a></li>
 					</ul>
 				</li>
 				<li><a href="/simulate">Simulate Charger</a></li>
+				<li><a href="/invoice">Invoice</a></li>
 				<li><a href="#">Contact</a></li>
 			</ul>
 		</div>
@@ -29,28 +31,28 @@
 				<thead>
 					<tr>
 						<th>Id</th>
-						<th>Monthly Cost</th>
-						<th>Network Minutes Included</th>
-						<th>Network SMS Included</th>
+						
 						<th>Minutes Included</th>
 						<th>SMS Included</th>
+						<th>Network Minutes Included</th>
+						<th>Network SMS Included</th>						
 						<th>Traffic Included</th>
 						<th>Subscription Type</th>
-						<th></th>
+						<th>Monthly Cost</th>
 					</tr>
 				</thead>
 				<tbody>
 					<tr th:each="sub: ${subscriptions}">
 						<td th:text="${sub.getID() }" />
-						<td th:text="${sub.getMonthlyCost()+' $' }" />
+						<td th:text="${sub.getMinutesIncluded()+' min' }" />
+						<td th:text="${sub.getSMSIncluded()+' SMS' }" />					
 						<td th:text="${sub.getNetworkMinutesIncluded()+' min' }" />
 						<td th:text="${sub.getNetworkSMSIncluded()+' SMS' }" />
-						<td th:text="${sub.getMinutesIncluded()+' min' }" />
-						<td th:text="${sub.getSMSIncluded()+' SMS' }" />
 						<td th:text="${sub.getTrafficIncluded()+' MB' }" />
 						<td><span th:if="${sub.getSubscriptionType() == 1 }">Premium</span>
 							<span th:unless="${sub.getSubscriptionType() == 1 }">Standard</span>
 						</td>
+						<td th:text="${sub.getMonthlyCost()+' $' }" />
 					</tr>
 				</tbody>
 			</table>

@@ -15,11 +15,12 @@
 						<li><a href="/table/clients">All Clients</a></li>
 						<li><a href="/table/subscriptions">Subscription</a></li>
 						<li><a href="/table/extra_charges">Extra Charges</a></li>
-						<li><a href="/table/cdr">CRD</a></li>
+						<li><a href="/table/cdr">CDR</a></li>
 					</ul>
 				</li>
 				<li><a href="/simulate">Simulate Charger</a></li>
 				<li><a href="/invoice">Invoice</a></li>
+				<li><a href="/cronos">Cronos</a></li>
 				<li><a href="#">Contact</a></li>
 			</ul>
 		</div>
@@ -40,7 +41,7 @@
 		</select>
 		
 		<label class="labelAddMB">Add minutes to net: </label>
-		<input type="text" th:field="*{networkHistory.MinutesSpend}" />
+		<input type="text" th:field="*{networkHistory.MBSpend}" />
 		
 		<button type="submit"><img class="buttonOnNetwork" /></button>
 	</form>

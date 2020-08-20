@@ -5,7 +5,6 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.concurrent.TimeUnit;
 
-import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -51,12 +50,19 @@ public class PhoneCallController {
 
 		return "phone_call";
 	}
+	
+	@GetMapping("/history/calls")
+	public String historyCalls(Model model) {
+
+		model.addAttribute("calls", callsServicies.getAllCalls());
+		return "history_calls";
+	}
 
 	@PostMapping("/simulate/phone-call")
 	public String phoneCallResponse(@ModelAttribute("client") Clients client) {
 		minAdd = client.getCallHistory().getCallMinutes();
+		
 		client.setCallHistory(new CallsHistory());
-
 		client.getCallHistory().setStartCall();
 
 		String firstNumber = client.getPhone().split(",")[0];
@@ -64,10 +70,11 @@ public class PhoneCallController {
 
 		clientOnePhone = clientServicies.findClientByPhone(firstNumber);
 		clientOnePhone.setCallHistory(new CallsHistory());
-
+		clientOnePhone.getCallHistory().setStartCall();
+		
 		clientTwoPhone = clientServicies.findClientByPhone(secondNumber);
 
-		clientOnePhone.getCallHistory().setStartCall();
+		
 
 		if (firstNumber.substring(0, 4).equals(secondNumber.substring(0, 4)))
 
@@ -78,6 +85,8 @@ public class PhoneCallController {
 			System.out.println("Don't same call furnizor");
 			clientOnePhone.getCallHistory().setCallType(String.valueOf(Call.outside_network));
 		}
+		
+		clientServicies.updateClient(clientOnePhone);
 
 		return "make_call";
 	}
@@ -86,7 +95,6 @@ public class PhoneCallController {
 	public String endCall(@ModelAttribute("client") Clients client, Model model) {
 
 		clientOnePhone.getCallHistory().setEndCall();
-
 		try {
 			dateStart = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss")
 					.parse(clientOnePhone.getCallHistory().getStartCall());
@@ -98,23 +106,22 @@ public class PhoneCallController {
 		long minutes = getDateDiff(dateStart, dateEnd, TimeUnit.MINUTES);
 
 		long minSpend = minutes == 0 ? 1 : minutes;
-
+		
 		callsServicies.addCall(clientOnePhone, clientTwoPhone.getPhone(),
 				clientOnePhone.getCallHistory().getStartCall(), clientOnePhone.getCallHistory().getEndCall(),
 				minSpend + minAdd, clientOnePhone.getCallHistory().getCallType());
-
+		
+//		long minIncl = (long) detailSub.getMinutesIncluded();
+//		
+//		if(clientOnePhone.getCallHistory().getCallType().equals(String.valueOf(Call.in_network))) {
+//			clientOnePhone.getSubscription().setMinutesIncluded(minIncl - minSpend);
+//		}
+		
 		clientServicies.updateClient(clientOnePhone);
 
 		return "homepage";
 	}
-
-	@GetMapping("/history/calls")
-	public String historyCalls(Model model) {
-
-		model.addAttribute("calls", callsServicies.getAllCalls());
-		return "history_calls";
-	}
-
+	
 	private static long getDateDiff(Date date1, Date date2, TimeUnit timeUnit) {
 		long diffInMillies = date2.getTime() - date1.getTime();
 		return timeUnit.convert(diffInMillies, TimeUnit.MILLISECONDS);

@@ -1,9 +1,12 @@
 package ro.dascaliucadi.springapp.servicies.simulation_history;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
-import org.joda.time.DateTime;
 import org.springframework.stereotype.Service;
 
 import ro.dascaliucadi.springapp.clients.Clients;
@@ -69,5 +72,60 @@ public class CallsServiciesImpl implements CallsServicies {
 			}
 		}
 		return calls;
+	}
+	
+	@SuppressWarnings("deprecation")
+	@Override
+	public List<CallsHistory> getCallsByClientIdAndCurrentDate(int clientId) {
+		List<CallsHistory> calls = new ArrayList<CallsHistory>();
+		SimpleDateFormat formatter= new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
+		
+		Date firstDate = null;
+		try {
+			firstDate = formatter.parse( new SimpleDateFormat("dd-MM-yyyy HH:mm:ss").format(Calendar.getInstance().getTime()) );
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		Date secondDate = null;
+		try {
+			secondDate = formatter.parse( new SimpleDateFormat("dd-MM-yyyy HH:mm:ss").format(Calendar.getInstance().getTime()) );
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		
+		firstDate.setDate(1);
+		System.out.println("Here is firstDate: " + firstDate);
+		secondDate.setDate(1);
+		secondDate.setMonth(Calendar.getInstance().get(Calendar.MONTH) + 1);
+		System.out.println("Here is secondDate: " + secondDate);
+		
+		for(CallsHistory call : callsRepository.findAll()) {
+			try {
+				if(call.getClientId() == clientId &&
+						new SimpleDateFormat("dd-MM-yyyy HH:mm:ss").parse(call.getStartCall()).after(firstDate)
+						&& new SimpleDateFormat("dd-MM-yyyy HH:mm:ss").parse(call.getEndCall()).before(secondDate)) {
+					calls.add(call);
+				}
+			} catch (ParseException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		
+		return calls;
+	}
+	
+	@Override
+	public long getTotalMinuteByClientIdAndCallType(Clients client, String callType) {
+		long totalMinutes = 0;
+		for(CallsHistory call : callsRepository.findAll()) {
+			if(call.getClientId() == client.getID() && call.getCallType().equals(callType)) {
+				totalMinutes += call.getCallMinutes();
+			}
+		}
+		return totalMinutes;
 	}
 }

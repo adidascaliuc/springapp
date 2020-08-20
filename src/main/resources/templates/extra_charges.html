@@ -15,11 +15,12 @@
 						<li><a href="/table/clients">All Clients</a></li>
 						<li><a href="/table/subscriptions">Subscription</a></li>
 						<li><a href="/table/extra_charges">Extra Charges</a></li>
-						<li><a href="/table/cdr">CRD</a></li>
+						<li><a href="/table/cdr">CDR</a></li>
 					</ul>
 				</li>
 				<li><a href="/simulate">Simulate Charger</a></li>
 				<li><a href="/invoice">Invoice</a></li>
+				<li><a href="/cronos">Cronos</a></li>
 				<li><a href="#">Contact</a></li>
 			</ul>
 		</div>
@@ -45,11 +46,11 @@
 					<tr th:each="extra: ${extra_charges}">
 						<td th:text="${extra.getID() }" />
 						<td th:text="${extra.getClientId()}" />
-						<td th:text="${extra.getCall()+' min' }" />
-						<td th:text="${extra.getSMS()+' SMS' }" />
-						<td th:text="${extra.getNetworkCall()+' min' }" />
-						<td th:text="${extra.getNetworkSMS()+' SMS' }" />
-						<td th:text="${extra.getInternetTraffic()+' MB' }" />
+						<td th:text="${extra.getCall()+' $' }" />
+						<td th:text="${extra.getSMS()+' $' }" />
+						<td th:text="${extra.getNetworkCall()+' $' }" />
+						<td th:text="${extra.getNetworkSMS()+' $' }" />
+						<td th:text="${extra.getInternetTraffic()+' $' }" />
 						<td><span th:if="${extra.getExtra_ChargesType() == 1 }">Premium</span>
 							<span th:unless="${extra.getExtra_ChargesType() == 1 }">Standard</span>
 						</td>

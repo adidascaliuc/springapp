@@ -15,17 +15,20 @@ import org.springframework.web.bind.annotation.RestController;
 
 import lombok.RequiredArgsConstructor;
 import ro.dascaliucadi.springapp.clients.Clients;
+import ro.dascaliucadi.springapp.enumerari.SubscriptionsEnum;
 import ro.dascaliucadi.springapp.servicies.client.ClientsServicies;
 import ro.dascaliucadi.springapp.servicies.extra_charges.Extra_ChargesServicies;
 import ro.dascaliucadi.springapp.servicies.simulation_history.CallsServicies;
 import ro.dascaliucadi.springapp.servicies.simulation_history.NetworkServicies;
 import ro.dascaliucadi.springapp.servicies.simulation_history.SmsServicies;
+import ro.dascaliucadi.springapp.subscription.Subscriptions;
 
 @RestController
 @RequiredArgsConstructor
 public class Html2PdfRestController {
 
 	private final Html2PdfService pdfService;
+	private Subscriptions sub;
 
 	public Html2PdfRestController(Html2PdfService pdfService) {
 		this.pdfService = pdfService;
@@ -49,8 +52,8 @@ public class Html2PdfRestController {
 
 	@PostMapping(value = "/invoice", produces = "application/pdf")
 	public ResponseEntity<InputStreamResource> html2pdf(@ModelAttribute("client") Clients client, Model model, Map<String, Object> data) {
-		int id = clientServicies.getByPhoneNumber(client.getPhone()).getID();
-		
+		Clients clientCurrent = clientServicies.getByPhoneNumber(client.getPhone());
+		sub = new Subscriptions(SubscriptionsEnum.valueOf( clientCurrent.getSubscriptionType()== 2?"Premium":"Standard"));
 		LocalDate localDate = new LocalDate();
 		String payMonth = "01-" + localDate.toString("MMMM")+ "-" + localDate.getYear();
 		String dueMonth = "01-"  + new DateFormatSymbols().getMonths()[localDate.getMonthOfYear()] + "-" + localDate.getYear();
@@ -58,12 +61,13 @@ public class Html2PdfRestController {
 		model.addAttribute("payMonth", payMonth);
 		model.addAttribute("dueMonth", dueMonth);
 		
-		model.addAttribute("extra_charges", extra_chargesServicies.getAllExtra_ChargesByClientId(id));
-		model.addAttribute("sub", clientServicies.findClientByID(id).getSubscription());
-		model.addAttribute("client", clientServicies.findClientByID(id));
-		model.addAttribute("calls", callServicies.getAllCallsByClientId(id));
-		model.addAttribute("smss", smsServicies.getAllSmsById(id));
-		model.addAttribute("networks", networkServicies.getAllNetworkById(id));
+		model.addAttribute("extra_charges", extra_chargesServicies.getAllExtra_ChargesByClientId(clientCurrent.getID()));
+		model.addAttribute("sub", clientServicies.findClientByID(clientCurrent.getID()).getSubscription());
+		model.addAttribute("client", clientServicies.findClientByID(clientCurrent.getID()));
+		model.addAttribute("calls", callServicies.getCallsByClientIdAndCurrentDate(clientCurrent.getID()));
+		model.addAttribute("smss", smsServicies.getSmsByClientIdAndCurrentDate(clientCurrent.getID()));
+		model.addAttribute("networks", networkServicies.getNetworkByClientIdAndCurrentDate(clientCurrent.getID()));
+		model.addAttribute("totalToPay", extra_chargesServicies.getTotalToPayByClientId(clientCurrent) + sub.getMonthlyCost());
 
 		InputStreamResource resource = pdfService.generateInvoice(data);
 

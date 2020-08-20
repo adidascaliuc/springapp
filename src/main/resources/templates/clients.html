@@ -15,16 +15,18 @@
 						<li><a href="/table/clients">All Clients</a></li>
 						<li><a href="/table/subscriptions">Subscription</a></li>
 						<li><a href="/table/extra_charges">Extra Charges</a></li>
-						<li><a href="/table/cdr">CRD</a></li>
+						<li><a href="/table/cdr">CDR</a></li>
 					</ul>
 				</li>
 				<li><a href="/simulate">Simulate Charger</a></li>
 				<li><a href="/invoice">Invoice</a></li>
+				<li><a href="/cronos">Cronos</a></li>
 				<li><a href="#">Contact</a></li>
 			</ul>
 		</div>
 	</header >
-
+	<a href="/add/client"><img class="imgAddClient" src="../addClient.png" /></a>
+	<span class="spanAddClient">Add new client</span>
 	<div class="border">
 		<div>
 			<table class="table-bordered">
@@ -37,6 +39,7 @@
 						<th>Balance</th>
 						<th>Subscription Type</th>
 						<th>Extra Charges Type</th>
+						<th></th>
 						<th></th>
 					</tr>
 				</thead>
@@ -53,7 +56,8 @@
 						<td><span th:if="${client.getExtraChargesType() == 1 }">Premium</span>
 							<span th:unless="${client.getExtraChargesType() == 1 }">Standard</span>
 						</td>
-						<td><a th:href="@{/modify/client(id=${client.getID() })}">Modify</a></td>
+						<td><a th:href="@{/modify/client/(id=${client.getID()})}"><img src="../editClient.png" height=50 width=50 /></a></td>
+						<td><a th:href="@{/delete/client(id=${client.getID()})}"><img src = "../deleteClient.png" height=50 width=50 /></a></td>
 					</tr>
 				</tbody>
 			</table>

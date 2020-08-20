@@ -2,8 +2,7 @@
 <html lang="en" xmlns:th="http://thymeleaf.org">
 <head>
 <meta charset="utf-8">
-<title>Example 1</title>
-<link rel="stylesheet" href="style.css" media="all" />
+<title>Invoice</title>
 
 <style>
 .clearfix:after {
@@ -260,7 +259,7 @@ footer {
 				<td th:text="${net.getPhoneNumber() }" />
 				<td th:text="${net.getTrafficStart() }" />
 				<td th:text="${net.getTrafficEnd() }" />
-				<td th:text="${net.getMinutesSpend() }" />
+				<td th:text="${net.getMBSpend() }" />
 				<td th:text="${net.getTrafficType() }" />
 			</tr>
 		</tbody>
@@ -309,18 +308,16 @@ footer {
 		<tbody>
 			<tr th:each="extra : ${extra_charges}">
 				<td th:text="${extra.getID() }" />
-				<td th:text="${extra.getCall() }" />
-				<td th:text="${extra.getSMS() }" />
-				<td th:text="${extra.getNetworkCall() }" />
-				<td th:text="${extra.getNetworkSMS() }" />
-				<td th:text="${extra.getInternetTraffic() }" />
+				<td th:text="${extra.getCall() + ' $' }" />
+				<td th:text="${extra.getSMS() + ' $' }" />
+				<td th:text="${extra.getNetworkCall() + ' $' }" />
+				<td th:text="${extra.getNetworkSMS() + ' $'}" />
+				<td th:text="${extra.getInternetTraffic() + ' $' }" />
 			</tr>
 		</tbody>
 	</table>
 
-	<span style="text-align: right;">Total: </span> </main>
-	<footer>
-		Invoice create for user <span th:text="${client.getName() }"></span>.
-	</footer>
+	<h1><span th:text="${'Total: ' + totalToPay + ' $'}"> </span></h1>
+	</main>
 </body>
 </html>

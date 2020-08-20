@@ -5,7 +5,7 @@
 </head>
 <body>
 
-<form th:action="@{/modify/client}" th:object="${client}" method="POST">
+<form th:action="@{/add/client}" th:object="${client}" method="POST">
 
   <label for="id">Id:</label><br>
   <input type="text" th:value="${client.getID() }" th:field="*{ID}"><br>

@@ -1,11 +1,11 @@
 <!DOCTYPE html >
 <html xmlns:th="http://thymeleaf.org">
 <head>
-<title>History Message</title>
+<title>Cronos</title>
 <link href="/css/main.css" rel="stylesheet" type="text/css">
 </head>
 <body>
-	<header class="header">
+	<header>
 		<div role="navigation" class="wrapper">
 			<ul class="nav navbar-nav">
 				<li class="active"><a href="/" class="navbar-brand">Home</a></li>
@@ -24,35 +24,18 @@
 				<li><a href="#">Contact</a></li>
 			</ul>
 		</div>
-	</header >
+	</header>
+	<p>Pick a number and hit send to receive cronos.</p>
+	
+	<form action="#" th:action=@{/cronos} th:object="${client}" method="post">
+		
+		<label class="labelPhoneNumber">Phone Number: </label>
+		<select th:field="*{Phone}">
+			<option th:each="cl : ${clients }" th:value="${cl.getPhone() }" th:text="${cl.getPhone() }">
+		</select>
+		
+		<button type="submit">Send</button>
+	</form>
 
-	<div class="border">
-		<div>
-			<table class="table-bordered">
-				<thead>
-					<tr>
-						<th>Id</th>
-						<th>Client Id</th>
-						<th>Sent Message</th>
-						<th>Receive Message</th>
-						<th>Nr Of Sms</th>
-						<th>Date Message Sent</th>
-						<th>Sms Type</th>
-					</tr>
-				</thead>
-				<tbody>
-					<tr th:each="sms : ${allSms}">
-						<td th:text="${sms.getID() }" />
-						<td th:text="${sms.getClientId() }" />
-						<td th:text="${sms.getSentSms() }" />
-						<td th:text="${sms.getReceiveSms() }" />
-						<td th:text="${sms.getNrOfSms() }" />
-						<td th:text="${sms.getDateSmsSent() }" />
-						<td th:text="${sms.getSmsType() }"/>
-					</tr>
-				</tbody>
-			</table>
-		</div>
-	</div>
 </body>
 </html>

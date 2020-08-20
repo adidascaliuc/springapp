@@ -117,6 +117,25 @@ h3 {
 	padding: 150px;
 }
 
+.deleteClient {
+	background-image: url(../editClient.png);
+	
+}
+
+.imgAddClient {
+	position: absolute;
+	top: 50px;
+	left: 50px;
+	width: 100px;
+	height: 100px;
+}
+
+.spanAddClient {
+	position: absolute;
+	top: 160px;
+	left: 40px;
+}
+
 /*********************** 
  ***Simulate Page CSS***
  ************************/

@@ -10,10 +10,6 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
-import org.joda.time.DateTime;
-import org.joda.time.format.DateTimeFormat;
-import org.joda.time.format.DateTimeFormatter;
-
 @Entity
 @Table(name = "network_history")
 public class NetworkHistory {
@@ -35,8 +31,8 @@ public class NetworkHistory {
 	@Column(name = "traffic_end")
 	public String TrafficEnd;
 
-	@Column(name = "minutes_spend")
-	public long MinutesSpend;
+	@Column(name = "mb_spend")
+	public long MBSpend;
 
 	@Column(name = "traffic_type")
 	public String TrafficType;
@@ -91,12 +87,12 @@ public class NetworkHistory {
 		
 	}
 
-	public long getMinutesSpend() {
-		return MinutesSpend;
+	public long getMBSpend() {
+		return MBSpend;
 	}
 
-	public void setMinutesSpend(long minutesSpend) {
-		MinutesSpend = minutesSpend;
+	public void setMBSpend(long minutesSpend) {
+		MBSpend = minutesSpend;
 	}
 
 	public String getTrafficType() {

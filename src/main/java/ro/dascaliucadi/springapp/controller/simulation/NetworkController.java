@@ -7,7 +7,6 @@ import java.util.Date;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
-import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -42,21 +41,45 @@ public class NetworkController {
 		this.clientServicies = clientServicies;
 		this.networkServicies = networkServicies;
 	}
+	
+	@GetMapping("/history/network-traffic")
+	public String historyTraffic(Model model) {
+
+		model.addAttribute("allNetworkTraffic", networkServicies.getAllTraffic());
+
+		return "history_network";
+	}
+
+	@GetMapping("/simulate/network-traffic")
+	public String simulateNetworkTraffic(Model model) {
+		List<String> netType = new ArrayList<String>();
+		netType.add("Read");
+		netType.add("Games");
+		netType.add("Stream");
+		netType.add("Video");
+
+		model.addAttribute("client", new Clients());
+		model.addAttribute("netType", netType);
+		model.addAttribute("clients", clientServicies.getAllClients());
+		return "network_traffic";
+	}
 
 	@PostMapping("/simulate/network-traffic")
 	public String responseNetworkTraffic(@ModelAttribute("client") Clients client) {
-		addMB = client.getNetworkHistory().getMinutesSpend();
-		
+		addMB = client.getNetworkHistory().getMBSpend();
+		networkType =  client.getNetworkHistory().getTrafficType();
 		client.setNetworkHistory(new NetworkHistory());
 
 		client.getNetworkHistory().setTrafficStart();
 		
 		String phoneNumber = client.getPhone().split(",")[0];
-
+		
 		clientNetwork = clientServicies.findClientByPhone(phoneNumber);
 		clientNetwork.setNetworkHistory(new NetworkHistory());
+		clientNetwork.getNetworkHistory().setTrafficType(client.getNetworkHistory().getTrafficType());
 		clientNetwork.getNetworkHistory().setTrafficStart();
 
+		clientServicies.updateClient(clientNetwork);
 		return "turnOn_networkTraffic";
 	}
 
@@ -80,31 +103,13 @@ public class NetworkController {
 
 		networkServicies.addNetwork(clientNetwork, clientNetwork.getNetworkHistory().getTrafficStart(),
 				clientNetwork.getNetworkHistory().getTrafficEnd(), minSpend + addMB, networkType);
+		
+		
+		clientServicies.updateClient(clientNetwork);
 		return "homepage";
 	}
 
-	@GetMapping("/history/network-traffic")
-	public String historyTraffic(Model model) {
-
-		model.addAttribute("allNetworkTraffic", networkServicies.getAllTraffic());
-
-		return "history_network";
-	}
-
-	@GetMapping("/simulate/network-traffic")
-	public String simulateNetworkTraffic(Model model) {
-		List<String> netType = new ArrayList<String>();
-		netType.add("Read");
-		netType.add("Games");
-		netType.add("Stream");
-		netType.add("Video");
-
-		model.addAttribute("client", new Clients());
-		model.addAttribute("netType", netType);
-		model.addAttribute("clients", clientServicies.getAllClients());
-		return "network_traffic";
-	}
-
+	
 	private static long getDateDiff(Date date1, Date date2, TimeUnit timeUnit) {
 		long diffInMillies = date2.getTime() - date1.getTime();
 		return timeUnit.convert(diffInMillies, TimeUnit.MILLISECONDS);

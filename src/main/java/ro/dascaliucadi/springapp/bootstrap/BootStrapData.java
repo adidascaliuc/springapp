@@ -17,7 +17,7 @@ import ro.dascaliucadi.springapp.subscription.SubscriptionsRepository;
 public class BootStrapData implements CommandLineRunner {
 
 	private Subscriptions s1, s2;
-	private Extra_Charges e1;
+	private Extra_Charges e1, e2, e3;
 	private Clients c1, c2, c3;
 	private CDR cdr;
 	
@@ -47,7 +47,7 @@ public class BootStrapData implements CommandLineRunner {
 		
 		e1 = new Extra_Charges();
 		e1.setExtra_ChargesType(1);
-		e1.setID(1);;
+		e1.setID(1);
 		extra_chargesRepository.save(e1);
 		
 		c1 = new Clients("Dascaliuc Adi", "Suceava", 800.78, "0743887339");
@@ -55,14 +55,24 @@ public class BootStrapData implements CommandLineRunner {
 		c1.setExtraChargesType(e1.getExtra_ChargesType());
 		clientRepository.save(c1);
 		
+		e2 = new Extra_Charges();
+		e2.setExtra_ChargesType(1);
+		e2.setID(2);
+		extra_chargesRepository.save(e2);
+		
 		c2 = new Clients("Vasilescu Vasile", "Cluj", 777.77, "0213698574");
 		c2.setSubscriptionType(s2.getSubscriptionType());
-		c2.setExtraChargesType(e1.getExtra_ChargesType());
+		c2.setExtraChargesType(e2.getExtra_ChargesType());
 		clientRepository.save(c2);
+		
+		e3 = new Extra_Charges();
+		e3.setExtra_ChargesType(1);
+		e3.setID(3);
+		extra_chargesRepository.save(e3);
 		
 		c3 = new Clients("Stefanescu Stefan", "Brasov", 34.56, "0216983574");
 		c3.setSubscriptionType(s1.getSubscriptionType());
-		c3.setExtraChargesType(e1.getExtra_ChargesType());
+		c3.setExtraChargesType(e3.getExtra_ChargesType());
 		clientRepository.save(c3);
 		
 		cdr = new CDR();

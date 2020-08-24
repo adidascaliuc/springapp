@@ -43,7 +43,11 @@
 		<input class="txtMessage"  type="text" name="txtMessage">
 		
 		<label class="labelAddSms">Add sent sms: </label>
-		<input type="text" th:field="*{smsHistory.NrOfSms}" />
+		<input type="text" th:field="*{smsHistory.NrOfSms}" 
+			pattern="[\d]{1,5}"
+			title="This input must contain only digits and a max of 5 digits length"
+			required
+		/>
 		
 		<button type="submit"><img class="buttonSendImage" /></button>
 	</form>

@@ -7,14 +7,19 @@ import org.springframework.stereotype.Service;
 
 import ro.dascaliucadi.springapp.clients.Clients;
 import ro.dascaliucadi.springapp.clients.ClientsRepository;
+import ro.dascaliucadi.springapp.extra_charges.Extra_Charges;
+import ro.dascaliucadi.springapp.extra_charges.Extra_ChargesRepository;
 
 @Service
 public class ClientsServiciesImpl implements ClientsServicies {
 
 	private final ClientsRepository clientRepository;
+	private final Extra_ChargesRepository extra_chargesRepository;
+	private Extra_Charges e;
 
-	public ClientsServiciesImpl(ClientsRepository clientRepository) {
+	public ClientsServiciesImpl(ClientsRepository clientRepository, Extra_ChargesRepository extra_chargesRepository) {
 		this.clientRepository = clientRepository;
+		this.extra_chargesRepository = extra_chargesRepository;
 
 	}
 
@@ -36,8 +41,16 @@ public class ClientsServiciesImpl implements ClientsServicies {
 
 	@Override
 	public Clients addClient(Clients newClient) {
+		e = null;
+		
 		newClient.setSubscriptionType(1);
 		clientRepository.save(newClient);
+		
+		e = new Extra_Charges();
+		e.setExtra_ChargesType(1);
+		e.setClientId(newClient.getID());
+		extra_chargesRepository.save(e);
+		
 		return newClient;
 	}
 

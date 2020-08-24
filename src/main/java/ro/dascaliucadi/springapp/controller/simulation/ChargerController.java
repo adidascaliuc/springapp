@@ -107,77 +107,62 @@ public class ChargerController {
 		try {
 			callMinutes = client.getSubscription().getMinutesIncluded() - totalMinutesInNetworkClientCurrent;
 
-			// client.getSubscription().setMinutesIncluded(callMinutes);
-
 		} catch (Exception e) {
 			callMinutes += client.getSubscription().getMinutesIncluded();
-			// client.getSubscription().setMinutesIncluded(callMinutes);
 		}
 
 		try {
 			networkMinutesRemaining = client.getSubscription().getNetworkMinutesIncluded()
 					- totalMinutesOutsideNetworkClientCurrent;
-			// client.getSubscription().setNetworkMinutesIncluded(networkMinutesRemaining);
 
 		} catch (Exception e) {
 			networkMinutesRemaining = client.getSubscription().getNetworkMinutesIncluded();
-			// client.getSubscription().setNetworkMinutesIncluded(networkMinutesRemaining);
 		}
 
 		try {
 			smsRemaining = client.getSubscription().getSMSIncluded() - totalSmsInNetworkClientCurrent;
-			// client.getSubscription().setSMSIncluded(smsRemaining);
 
 		} catch (Exception e) {
 			smsRemaining += client.getSubscription().getSMSIncluded();
-			// client.getSubscription().setSMSIncluded(smsRemaining);
 		}
 
 		try {
 			networkSmsRemaining = client.getSubscription().getNetworkSMSIncluded()
 					- totalSmsOutsideNetworkClientCurrent;
-			// client.getSubscription().setNetworkSMSIncluded(networkSmsRemaining);
 
 		} catch (Exception e) {
 			networkSmsRemaining = client.getSubscription().getNetworkSMSIncluded();
-			// client.getSubscription().setNetworkSMSIncluded(networkSmsRemaining);
 		}
 
 		try {
 			trafficRemaining = client.getSubscription().getTrafficIncluded() - totalMbClientCurrent;
-			// client.getSubscription().setTrafficIncluded(trafficRemaining);
 
 		} catch (Exception e) {
 			trafficRemaining = client.getSubscription().getTrafficIncluded();
-			// client.getSubscription().setTrafficIncluded(trafficRemaining);
 		}
 
 		// Calculate extra charges
-		// callMinutes = Math.abs(callMinutes);
 		if (callMinutes > detailSub.getMinutesIncluded()) {
 			client.getExtra_charges().setCall(callMinutes - detailSub.getMinutesIncluded());
 		}
 
-		// smsRemaining = Math.abs(smsRemaining);
 		if (smsRemaining > detailSub.getSMSIncluded()) {
 			client.getExtra_charges().setSMS(smsRemaining - detailSub.getSMSIncluded());
 		}
 
-		// networkMinutesRemaining = Math.abs(networkMinutesRemaining);
 		if (networkMinutesRemaining > detailSub.getNetworkMinutesIncluded()) {
 			client.getExtra_charges().setNetworkCall(networkMinutesRemaining - detailSub.getNetworkMinutesIncluded());
 		}
 
-		// networkSmsRemaining = Math.abs(networkSmsRemaining);
 		if (networkSmsRemaining > detailSub.getNetworkSMSIncluded()) {
 			client.getExtra_charges().setNetworkSMS(networkSmsRemaining - detailSub.getNetworkSMSIncluded());
 		}
 
-		// trafficRemaining = Math.abs(trafficRemaining);
 		if (trafficRemaining > detailSub.getTrafficIncluded()) {
 			client.getExtra_charges().setInternetTraffic(trafficRemaining - detailSub.getTrafficIncluded());
 		}
 
+		
 		extra_chargesServicies.updateExtra_Charges(client, callMinutes < 0 ? Math.abs(callMinutes) : 0,
 				smsRemaining < 0 ? Math.abs(smsRemaining) : 0,
 				networkMinutesRemaining < 0 ? Math.abs(networkMinutesRemaining) : 0,

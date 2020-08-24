@@ -1,0 +1,6 @@
+INDEX VERSION 1.131+D:\Java\Practica Mind\springapp\.metadata\.plugins\org.eclipse.jdt.core
+4120329791.index
+2719395046.index
+3045358565.index
+960141918.index
+1143838189.index

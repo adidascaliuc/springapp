@@ -12,7 +12,7 @@ import ro.dascaliucadi.springapp.servicies.client.ClientsServicies;
 public class InvoiceController {
 
 	@Autowired
-	ClientsServicies clientServicies;
+	protected ClientsServicies clientServicies;
 	
 	@GetMapping("/invoice")
 	public String invoice(Model model) {
@@ -21,4 +21,5 @@ public class InvoiceController {
 		model.addAttribute("clients", clientServicies.getAllClients());
 		return "invoice";
 	}
+	
 }

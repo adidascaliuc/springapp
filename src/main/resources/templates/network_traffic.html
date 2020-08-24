@@ -40,8 +40,11 @@
 			<option th:each="type : ${netType }" th:value="${type }" th:text="${type }">
 		</select>
 		
-		<label class="labelAddMB">Add minutes to net: </label>
-		<input type="text" th:field="*{networkHistory.MBSpend}" />
+		<label class="labelAddMB">Add MB to net: </label>
+		<input type="text" th:field="*{networkHistory.MBSpend}" 
+			pattern="[\d]{1,5}"
+			title="MB must contain only digits and a max of 5 digits length"
+		/>
 		
 		<button type="submit"><img class="buttonOnNetwork" /></button>
 	</form>

@@ -23,6 +23,24 @@
 
 	<dependencies>
 
+		<!-- https://mvnrepository.com/artifact/org.quartz-scheduler/quartz -->
+		<dependency>
+			<groupId>org.quartz-scheduler</groupId>
+			<artifactId>quartz</artifactId>
+		</dependency>
+
+		<!-- https://mvnrepository.com/artifact/org.slf4j/slf4j-simple -->
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-simple</artifactId>
+			<scope>test</scope>
+		</dependency>
+
+		<!-- https://mvnrepository.com/artifact/org.quartz-scheduler/quartz-jobs -->
+		<dependency>
+			<groupId>org.quartz-scheduler</groupId>
+			<artifactId>quartz-jobs</artifactId>
+		</dependency>
 
 		<!-- https://mvnrepository.com/artifact/com.itextpdf/html2pdf -->
 		<dependency>
@@ -30,6 +48,9 @@
 			<artifactId>html2pdf</artifactId>
 			<version>3.0.1</version>
 		</dependency>
+
+
+
 
 		<!-- https://mvnrepository.com/artifact/org.springframework.cloud/spring-cloud-security -->
 		<dependency>

@@ -36,7 +36,11 @@
 		</select>
 		
 		<label class="labelAddMinutes">Add minutes to call: </label>
-		<input type="text" th:field="*{callHistory.callMinutes}" />
+		<input type="text" th:field="*{callHistory.callMinutes}" 
+			pattern="[\d]{1,5}"
+			title="Minutes must contain only digits and a max of 5 digits length"
+			required
+		/>
 		
 		<label class="labelPhoneCallMessageTo">To: </label>
 		<select class="select-second" th:field="*{Phone}">

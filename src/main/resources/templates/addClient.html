@@ -6,27 +6,43 @@
 <body>
 
 <form th:action="@{/add/client}" th:object="${client}" method="POST">
-
-  <label for="id">Id:</label><br>
-  <input type="text" th:value="${client.getID() }" th:field="*{ID}"><br>
   
   <label for="name">Name:</label><br>
-  <input type="text" th:value="${client.getName() } " th:field="*{Name}"><br>
+  <input type="text" th:value="${client.getName() } " th:field="*{Name}"
+  	pattern="[a-zA-Z\ ]{3,20}"
+  	title="Name must be between 3 and 20 characters in length and contain only letters."
+  	required
+  ><br>
   
   <label for="address">Address:</label><br>
-  <input type="text" th:value="${client.getAddress() }" th:field="*{Address}"><br>
+  <input type="text" th:value="${client.getAddress() }" th:field="*{Address}"
+  	pattern="[a-zA-z\d\.\ ]{3,30}"
+  	title="Address must be between 3 and 30 characters in length and 
+  		contain only characters, letters, numbers and periods (.)"
+  	required
+  ><br>
   
   <label for="phone">Phone:</label><br>
-  <input type="text" th:value="${client.getPhone() }" th:field="*{Phone}"><br>
+  <input type="text" th:value="${client.getPhone() }" th:field="*{Phone}"
+  	pattern="[\d]{10,12}"
+  	title="Phone must be between 10 and 12 digits and contain 10 digits."
+  	required
+  ><br>
   
   <label for="balance">Balance:</label><br>
-  <input type="text" th:value="${client.getBalance() }" th:field="*{Balance}"><br>
+  <input type="text" th:value="${client.getBalance() }" th:field="*{Balance}"
+  	pattern="[\d]{1,5}"
+  	title="Balance must contain only digits with a max of 5 digits."
+  	required
+  ><br>
   
   <label for="subscription_type">Subscription Type:</label><br>
-  <input type="text" th:value="${client.getSubscriptionType() }" th:field="*{SubscriptionType}"><br>
+  <input type="radio" th:value="${2}" th:text="Standard" th:field="*{SubscriptionType}" /><br>
+  <input type="radio" th:value="${1}" th:text="Premium" th:field="*{SubscriptionType}" /><br>
   
   <label for="extra_charges_type">Extra Charges Type:</label><br>
-  <input type="text" th:value="${client.getExtraChargesType() }" th:field="*{ExtraChargesType}"><br>
+  <input type="radio" th:value="${2}" th:text="Standard" th:field="*{ExtraChargesType}"><br>
+  <input type="radio" th:value="${1}" th:text="Premium" th:field="*{ExtraChargesType}"><br>
   
   
   <input type="submit" value="Submit">

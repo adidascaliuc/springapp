@@ -74,7 +74,6 @@ public class Clients {
 	public Extra_Charges extra_charges;
 	
 	
-
 	public Clients() {
 	}
 

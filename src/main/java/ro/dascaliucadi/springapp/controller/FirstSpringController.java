@@ -90,8 +90,7 @@ public class FirstSpringController {
 		
 		model.addAttribute("client", new Clients());
 		
-		//return "addClient";
-		return "test";
+		return "addClient";
 	}
 	
 	@PostMapping("/add/client")

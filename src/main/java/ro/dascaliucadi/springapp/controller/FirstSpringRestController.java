@@ -17,7 +17,6 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
@@ -65,11 +64,6 @@ public class FirstSpringRestController {
 		
 		return ResponseEntity.ok(new AuthenticationResponse(jwt));
 	}
-	
-	@RequestMapping("hello")
-	public String hello(@RequestParam(value="name", defaultValue="World") String name) {
-		return "Hello " + name;
-	}
 
 	@DeleteMapping("client/{id}")
 	@ResponseBody
@@ -99,7 +93,7 @@ public class FirstSpringRestController {
 	
 
 	@PutMapping("/client/update")
-	@ResponseStatus(HttpStatus.CREATED)
+	@ResponseStatus()
 	public Clients updateClient(@RequestBody Clients newClient) {
 		return clientServicies.addClient(newClient);
 	}

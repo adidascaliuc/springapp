@@ -1,0 +1,4 @@
+FROM openjdk:8
+VOLUME c:/tmp
+ADD target/springapp-1.0.war app.war
+ENTRYPOINT ["java","-jar","/app.war"]

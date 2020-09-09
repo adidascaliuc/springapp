@@ -3,20 +3,19 @@ package ro.dascaliucadi.springapp.servicies.subscription;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.stereotype.Service;
 
 import ro.dascaliucadi.springapp.subscription.Subscriptions;
 import ro.dascaliucadi.springapp.subscription.SubscriptionsRepository;
 
 @Service
+@Configurable
 public class SubscriptionServiciesImpl implements SubscriptionServicies{
 	
-	private final SubscriptionsRepository subscriptionRepository;
-	
-	public SubscriptionServiciesImpl(SubscriptionsRepository subscriptionRepository) {
-		this.subscriptionRepository = subscriptionRepository;
-		// TODO Auto-generated constructor stub
-	}
+	@Autowired
+	private SubscriptionsRepository subscriptionRepository;
 	
 	@Override
 	public List<Subscriptions> getAllSubscriptions() {

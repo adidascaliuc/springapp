@@ -1,5 +1,8 @@
 package ro.dascaliucadi.springapp.extra_charges;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -50,6 +53,8 @@ public class Extra_Charges {
 	@NotNull
 	@Column(name = "internet_traffic")
 	private double InternetTraffic;
+	
+	private String MonthGeneratedExtra;
 
 	public Extra_Charges() {
 		this.setCall(0);
@@ -58,6 +63,7 @@ public class Extra_Charges {
 		this.setNetworkSMS(0);
 		this.setSMS(0);
 		this.setExtra_ChargesType(1);
+		this.setMonthGeneratedExtra();
 	}
 
 	public int getID() {
@@ -123,5 +129,16 @@ public class Extra_Charges {
 	public void setInternetTraffic(double internetTraffic) {
 		InternetTraffic = internetTraffic;
 	}
+	
+	public void setMonthGeneratedExtra() {
+		this.MonthGeneratedExtra = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss").format(Calendar.getInstance().getTime());
+	}
+	
+	public void setMonthGeneratedExtra(String monthGeneratedExtra) {
+		this.MonthGeneratedExtra = monthGeneratedExtra;
+	}
 
+	public String getMonthGeneratedExtra() {
+		return MonthGeneratedExtra;
+	}
 }

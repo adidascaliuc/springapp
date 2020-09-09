@@ -7,19 +7,23 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.stereotype.Service;
 
 import ro.dascaliucadi.springapp.clients.Clients;
+import ro.dascaliucadi.springapp.enumerari.MonthInvoiceEnum;
 import ro.dascaliucadi.springapp.simulation_history.CallsHistory;
 import ro.dascaliucadi.springapp.simulation_history.CallsRepository;
 
 @Service
+@Configurable
 public class CallsServiciesImpl implements CallsServicies {
-	private final CallsRepository callsRepository;
+	private Date firstDate = null;
+	private Date secondDate = null;
 
-	public CallsServiciesImpl(CallsRepository callsRepository) {
-		this.callsRepository = callsRepository;
-	}
+	@Autowired
+	private CallsRepository callsRepository;
 
 	@Override
 	public void addCall(Clients client, String receiveCall, String startCall, String endCall, long callMinutes,
@@ -62,7 +66,7 @@ public class CallsServiciesImpl implements CallsServicies {
 		}
 		return calls.get(calls.size() - 1);
 	}
-	
+
 	@Override
 	public List<CallsHistory> getAllCallsByClientId(int id) {
 		List<CallsHistory> calls = new ArrayList<CallsHistory>();
@@ -73,39 +77,36 @@ public class CallsServiciesImpl implements CallsServicies {
 		}
 		return calls;
 	}
-	
-	@SuppressWarnings("deprecation")
+
 	@Override
 	public List<CallsHistory> getCallsByClientIdAndCurrentDate(int clientId) {
 		List<CallsHistory> calls = new ArrayList<CallsHistory>();
-		SimpleDateFormat formatter= new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
+		SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
 		
-		Date firstDate = null;
 		try {
-			firstDate = formatter.parse( new SimpleDateFormat("dd-MM-yyyy HH:mm:ss").format(Calendar.getInstance().getTime()) );
-		} catch (ParseException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		Date secondDate = null;
-		try {
-			secondDate = formatter.parse( new SimpleDateFormat("dd-MM-yyyy HH:mm:ss").format(Calendar.getInstance().getTime()) );
+			firstDate = formatter
+					.parse(new SimpleDateFormat("dd-MM-yyyy HH:mm:ss").format(Calendar.getInstance().getTime()));
 		} catch (ParseException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 
-		
+		try {
+			secondDate = formatter
+					.parse(new SimpleDateFormat("dd-MM-yyyy HH:mm:ss").format(Calendar.getInstance().getTime()));
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
 		firstDate.setDate(1);
-		System.out.println("Here is firstDate: " + firstDate);
 		secondDate.setDate(1);
 		secondDate.setMonth(Calendar.getInstance().get(Calendar.MONTH) + 1);
-		System.out.println("Here is secondDate: " + secondDate);
 		
-		for(CallsHistory call : callsRepository.findAll()) {
+		for (CallsHistory call : callsRepository.findAll()) {
 			try {
-				if(call.getClientId() == clientId &&
-						new SimpleDateFormat("dd-MM-yyyy HH:mm:ss").parse(call.getStartCall()).after(firstDate)
+				if (call.getClientId() == clientId
+						&& new SimpleDateFormat("dd-MM-yyyy HH:mm:ss").parse(call.getStartCall()).after(firstDate)
 						&& new SimpleDateFormat("dd-MM-yyyy HH:mm:ss").parse(call.getEndCall()).before(secondDate)) {
 					calls.add(call);
 				}
@@ -114,15 +115,15 @@ public class CallsServiciesImpl implements CallsServicies {
 				e.printStackTrace();
 			}
 		}
-		
+
 		return calls;
 	}
-	
+
 	@Override
 	public long getTotalMinuteByClientIdAndCallType(Clients client, String callType) {
 		long totalMinutes = 0;
-		for(CallsHistory call : callsRepository.findAll()) {
-			if(call.getClientId() == client.getID() && call.getCallType().equals(callType)) {
+		for (CallsHistory call : callsRepository.findAll()) {
+			if (call.getClientId() == client.getID() && call.getCallType().equals(callType)) {
 				totalMinutes += call.getCallMinutes();
 			}
 		}

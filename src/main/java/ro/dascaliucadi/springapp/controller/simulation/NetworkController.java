@@ -15,9 +15,14 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import ro.dascaliucadi.springapp.clients.Clients;
+import ro.dascaliucadi.springapp.enumerari.SubscriptionsEnum;
+import ro.dascaliucadi.springapp.extra_charges.Extra_Charges;
 import ro.dascaliucadi.springapp.servicies.client.ClientsServicies;
+import ro.dascaliucadi.springapp.servicies.extra_charges.Extra_ChargesServicies;
 import ro.dascaliucadi.springapp.servicies.simulation_history.NetworkServicies;
+import ro.dascaliucadi.springapp.simulation_history.CDR;
 import ro.dascaliucadi.springapp.simulation_history.NetworkHistory;
+import ro.dascaliucadi.springapp.subscription.Subscriptions;
 
 @Controller
 public class NetworkController {
@@ -36,10 +41,14 @@ public class NetworkController {
 
 	@Autowired
 	private final NetworkServicies networkServicies;
+	
+	@Autowired 
+	private final Extra_ChargesServicies extra_chargesServicies;
 
-	public NetworkController(ClientsServicies clientServicies, NetworkServicies networkServicies) {
+	public NetworkController(ClientsServicies clientServicies, NetworkServicies networkServicies, Extra_ChargesServicies extra_chargesServicies) {
 		this.clientServicies = clientServicies;
 		this.networkServicies = networkServicies;
+		this.extra_chargesServicies = extra_chargesServicies;
 	}
 	
 	@GetMapping("/history/network-traffic")
@@ -84,7 +93,7 @@ public class NetworkController {
 	}
 
 	@PostMapping("simulate/network-traffic/end")
-	public String endNetwork() {
+	public String endNetwork(Model model) {
 
 		clientNetwork.getNetworkHistory().setTrafficEnd();
 
@@ -106,6 +115,64 @@ public class NetworkController {
 		
 		
 		clientServicies.updateClient(clientNetwork);
+		
+		Clients clientCurrentNetwork = clientServicies.findClientByID(clientNetwork.getID());
+		
+		long totalMbClientCurrent = 0;
+		try {
+			totalMbClientCurrent = networkServicies.getTotalMbByClient(clientCurrentNetwork);
+		} catch (Exception e) {
+
+		}
+		
+		double trafficRemaining = 0;
+		try {
+			trafficRemaining = clientCurrentNetwork.getSubscription().getTrafficIncluded() - totalMbClientCurrent;
+
+		} catch (Exception e) {
+			trafficRemaining = clientCurrentNetwork.getSubscription().getTrafficIncluded();
+		}
+		
+		Subscriptions detailSub = new Subscriptions(
+				SubscriptionsEnum.valueOf(clientCurrentNetwork.getSubscriptionType() == 1 ? "Standard" : "Premium"));
+		
+		if (trafficRemaining > detailSub.getTrafficIncluded()) {
+			clientCurrentNetwork.getExtra_charges().setInternetTraffic(trafficRemaining - detailSub.getTrafficIncluded());
+		}
+		
+		Extra_Charges extra_chargesClientCurrent = 
+				extra_chargesServicies.getExtraChargesForClientByClientId(clientCurrentNetwork.getID());
+		
+		double call = 0;
+		try {
+			call = extra_chargesClientCurrent.getCall();
+		} catch (Exception e) { }
+		
+		double sms = 0;
+		try {
+			sms = extra_chargesClientCurrent.getSMS();
+		} catch (Exception e) { }
+		
+		double networkCall = 0;
+		try {
+			networkCall = extra_chargesClientCurrent.getNetworkCall();
+		} catch (Exception e) { }
+		
+		double networkSms = 0;
+		try {
+			networkSms = extra_chargesClientCurrent.getNetworkSMS();
+		} catch (Exception e) { }
+		CDR cdr = new CDR();
+		extra_chargesServicies.updateExtra_Charges(
+				clientCurrentNetwork.getID(),
+				clientCurrentNetwork,
+				call / cdr.getPerCallMinute(),
+				sms / cdr.getPerSms(),
+				networkCall / cdr.getPerNetworkCallMinute(),
+				networkSms / cdr.getPerNetworkSms(),
+				trafficRemaining < 0 ? Math.abs(trafficRemaining) : 0);
+		
+		
 		return "homepage";
 	}
 

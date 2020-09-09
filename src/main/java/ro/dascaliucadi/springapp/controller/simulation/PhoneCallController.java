@@ -14,9 +14,14 @@ import org.springframework.web.bind.annotation.PostMapping;
 
 import ro.dascaliucadi.springapp.clients.Clients;
 import ro.dascaliucadi.springapp.enumerari.Call;
+import ro.dascaliucadi.springapp.enumerari.SubscriptionsEnum;
+import ro.dascaliucadi.springapp.extra_charges.Extra_Charges;
 import ro.dascaliucadi.springapp.servicies.client.ClientsServicies;
+import ro.dascaliucadi.springapp.servicies.extra_charges.Extra_ChargesServicies;
 import ro.dascaliucadi.springapp.servicies.simulation_history.CallsServicies;
+import ro.dascaliucadi.springapp.simulation_history.CDR;
 import ro.dascaliucadi.springapp.simulation_history.CallsHistory;
+import ro.dascaliucadi.springapp.subscription.Subscriptions;
 
 @Controller
 public class PhoneCallController {
@@ -34,10 +39,14 @@ public class PhoneCallController {
 
 	@Autowired
 	private final ClientsServicies clientServicies;
+	
+	@Autowired
+	private final Extra_ChargesServicies extra_chargesServicies;
 
-	public PhoneCallController(CallsServicies callsServicies, ClientsServicies clientServicies) {
+	public PhoneCallController(CallsServicies callsServicies, ClientsServicies clientServicies, Extra_ChargesServicies extra_chargesServicies) {
 		this.callsServicies = callsServicies;
 		this.clientServicies = clientServicies;
+		this.extra_chargesServicies = extra_chargesServicies;
 
 	}
 
@@ -111,14 +120,80 @@ public class PhoneCallController {
 				clientOnePhone.getCallHistory().getStartCall(), clientOnePhone.getCallHistory().getEndCall(),
 				minSpend + minAdd, clientOnePhone.getCallHistory().getCallType());
 		
-//		long minIncl = (long) detailSub.getMinutesIncluded();
-//		
-//		if(clientOnePhone.getCallHistory().getCallType().equals(String.valueOf(Call.in_network))) {
-//			clientOnePhone.getSubscription().setMinutesIncluded(minIncl - minSpend);
-//		}
+		Clients clientCall = clientServicies.findClientByID(clientOnePhone.getID());
 		
-		clientServicies.updateClient(clientOnePhone);
+		long totalMinutesInNetworkClientCurrent = 0;
+		try {
+			totalMinutesInNetworkClientCurrent = callsServicies.getTotalMinuteByClientIdAndCallType(clientCall,
+					String.valueOf(Call.in_network));
+		} catch (Exception e) {
 
+		}
+		
+		long totalMinutesOutsideNetworkClientCurrent = 0;
+		try {
+			totalMinutesOutsideNetworkClientCurrent = callsServicies.getTotalMinuteByClientIdAndCallType(clientCall,
+					String.valueOf(Call.outside_network));
+		} catch (Exception e) {
+
+		}
+		
+		double callMinutes = 0;
+		try {
+			callMinutes = clientCall.getSubscription().getMinutesIncluded() - totalMinutesInNetworkClientCurrent;
+
+		} catch (Exception e) {
+			callMinutes += clientCall.getSubscription().getMinutesIncluded();
+		}
+		
+		double networkMinutesRemaining = 0;
+		try {
+			networkMinutesRemaining = clientCall.getSubscription().getNetworkMinutesIncluded()
+					- totalMinutesOutsideNetworkClientCurrent;
+
+		} catch (Exception e) {
+			networkMinutesRemaining = clientCall.getSubscription().getNetworkMinutesIncluded();
+		}
+		
+		Subscriptions detailSub = new Subscriptions(
+				SubscriptionsEnum.valueOf(clientCall.getSubscriptionType() == 1 ? "Standard" : "Premium"));
+		
+		if (callMinutes > detailSub.getMinutesIncluded()) {
+			clientCall.getExtra_charges().setCall(callMinutes - detailSub.getMinutesIncluded());
+		}
+		
+		if (networkMinutesRemaining > detailSub.getNetworkMinutesIncluded()) {
+			clientCall.getExtra_charges().setNetworkCall(networkMinutesRemaining - detailSub.getNetworkMinutesIncluded());
+		}
+		
+		Extra_Charges extra_chargesClientCurrent = 
+				extra_chargesServicies.getExtraChargesForClientByClientId(clientCall.getID());
+		
+		double sms = 0;
+		try {
+			sms = extra_chargesClientCurrent.getSMS();
+		} catch(Exception e) { }
+		
+		double networkSms = 0;
+		try {
+			networkSms = extra_chargesClientCurrent.getNetworkSMS();
+		} catch(Exception e) { }
+		
+		double internetTraffic = 0;
+		try {
+			internetTraffic = extra_chargesClientCurrent.getInternetTraffic();
+		} catch (Exception e) { }
+		
+		CDR cdr = new CDR();
+		extra_chargesServicies.updateExtra_Charges(
+				clientCall.getID(),
+				clientCall,
+				callMinutes < 0 ? Math.abs(callMinutes) : 0,
+				sms / cdr.getPerSms(),
+				networkMinutesRemaining < 0 ? Math.abs(networkMinutesRemaining) : 0,
+				networkSms / cdr.getPerNetworkSms(),
+				internetTraffic / cdr.getPerMbInternetTraffic());
+	
 		return "homepage";
 	}
 	

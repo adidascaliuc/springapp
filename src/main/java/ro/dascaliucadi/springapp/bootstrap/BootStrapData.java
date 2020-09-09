@@ -48,27 +48,30 @@ public class BootStrapData implements CommandLineRunner {
 		e1 = new Extra_Charges();
 		e1.setExtra_ChargesType(1);
 		e1.setID(1);
+		e1.setClientId(1);
 		extra_chargesRepository.save(e1);
+		
+		e2 = new Extra_Charges();
+		e2.setExtra_ChargesType(1);
+		e2.setID(2);
+		e2.setClientId(2);
+		extra_chargesRepository.save(e2);
+		
+		e3 = new Extra_Charges();
+		e3.setExtra_ChargesType(1);
+		e3.setID(3);
+		e3.setClientId(3);
+		extra_chargesRepository.save(e3);
 		
 		c1 = new Clients("Dascaliuc Adi", "Suceava", 800.78, "0743887339");
 		c1.setSubscriptionType(s1.getSubscriptionType());
 		c1.setExtraChargesType(e1.getExtra_ChargesType());
 		clientRepository.save(c1);
 		
-		e2 = new Extra_Charges();
-		e2.setExtra_ChargesType(1);
-		e2.setID(2);
-		extra_chargesRepository.save(e2);
-		
 		c2 = new Clients("Vasilescu Vasile", "Cluj", 777.77, "0213698574");
 		c2.setSubscriptionType(s2.getSubscriptionType());
 		c2.setExtraChargesType(e2.getExtra_ChargesType());
 		clientRepository.save(c2);
-		
-		e3 = new Extra_Charges();
-		e3.setExtra_ChargesType(1);
-		e3.setID(3);
-		extra_chargesRepository.save(e3);
 		
 		c3 = new Clients("Stefanescu Stefan", "Brasov", 34.56, "0216983574");
 		c3.setSubscriptionType(s1.getSubscriptionType());

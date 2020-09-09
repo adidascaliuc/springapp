@@ -7,21 +7,25 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.stereotype.Service;
 
 import ro.dascaliucadi.springapp.clients.Clients;
+import ro.dascaliucadi.springapp.enumerari.MonthInvoiceEnum;
+import ro.dascaliucadi.springapp.simulation_history.CallsHistory;
 import ro.dascaliucadi.springapp.simulation_history.NetworkHistory;
 import ro.dascaliucadi.springapp.simulation_history.NetworkRepository;
 
 @Service
+@Configurable
 public class NetworkServiciesImpl implements NetworkServicies {
 
-	private final NetworkRepository networkRepository;
+	@Autowired
+	private NetworkRepository networkRepository;
 
-	public NetworkServiciesImpl(NetworkRepository networkRepository) {
-		this.networkRepository = networkRepository;
-
-	}
+	private Date firstDate = null;
+	private Date secondDate = null;
 
 	@Override
 	public void addNetwork(Clients client, String trafficStart, String trafficEnd, long minutesSpend,
@@ -70,37 +74,36 @@ public class NetworkServiciesImpl implements NetworkServicies {
 
 		return net;
 	}
-	
-	@SuppressWarnings("deprecation")
+
 	@Override
 	public List<NetworkHistory> getNetworkByClientIdAndCurrentDate(int clientId) {
 		List<NetworkHistory> networks = new ArrayList<NetworkHistory>();
-		SimpleDateFormat formatter= new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
+		SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
 		
-		Date firstDate = null;
 		try {
-			firstDate = formatter.parse( new SimpleDateFormat("dd-MM-yyyy HH:mm:ss").format(Calendar.getInstance().getTime()) );
+			firstDate = formatter
+					.parse(new SimpleDateFormat("dd-MM-yyyy HH:mm:ss").format(Calendar.getInstance().getTime()));
 		} catch (ParseException e) {
-			e.printStackTrace();
-		}
-		Date secondDate = null;
-		try {
-			secondDate = formatter.parse( new SimpleDateFormat("dd-MM-yyyy HH:mm:ss").format(Calendar.getInstance().getTime()) );
-		} catch (ParseException e) {
+			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 
-		
+		try {
+			secondDate = formatter
+					.parse(new SimpleDateFormat("dd-MM-yyyy HH:mm:ss").format(Calendar.getInstance().getTime()));
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
 		firstDate.setDate(1);
-		System.out.println("Here is firstDate: " + firstDate);
 		secondDate.setDate(1);
 		secondDate.setMonth(Calendar.getInstance().get(Calendar.MONTH) + 1);
-		System.out.println("Here is secondDate: " + secondDate);
 		
-		for(NetworkHistory net : networkRepository.findAll()) {
+		for (NetworkHistory net : networkRepository.findAll()) {
 			try {
-				if(net.getClientId() == clientId &&
-						new SimpleDateFormat("dd-MM-yyyy HH:mm:ss").parse(net.getTrafficStart()).after(firstDate)
+				if (net.getClientId() == clientId
+						&& new SimpleDateFormat("dd-MM-yyyy HH:mm:ss").parse(net.getTrafficStart()).after(firstDate)
 						&& new SimpleDateFormat("dd-MM-yyyy HH:mm:ss").parse(net.getTrafficEnd()).before(secondDate)) {
 					networks.add(net);
 				}
@@ -108,15 +111,15 @@ public class NetworkServiciesImpl implements NetworkServicies {
 				e.printStackTrace();
 			}
 		}
-		
+
 		return networks;
 	}
-	
+
 	@Override
 	public long getTotalMbByClient(Clients client) {
 		long totalMb = 0;
-		for(NetworkHistory net : networkRepository.findAll()) {
-			if(net.getClientId() == client.getID()) {
+		for (NetworkHistory net : networkRepository.findAll()) {
+			if (net.getClientId() == client.getID()) {
 				totalMb += net.getMBSpend();
 			}
 		}

@@ -1,0 +1,9 @@
+ID: 1
+Name: Dascaliuc Adi
+Address: Suceava
+Balance: 800.78
+Phone: 0743887339
+Subscription Type: Premium
+Extra Charges Type: Standard
+
+Extra Charges: 

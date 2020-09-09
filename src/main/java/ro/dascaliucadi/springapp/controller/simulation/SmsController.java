@@ -9,9 +9,14 @@ import org.springframework.web.bind.annotation.PostMapping;
 
 import ro.dascaliucadi.springapp.clients.Clients;
 import ro.dascaliucadi.springapp.enumerari.Sms;
+import ro.dascaliucadi.springapp.enumerari.SubscriptionsEnum;
+import ro.dascaliucadi.springapp.extra_charges.Extra_Charges;
 import ro.dascaliucadi.springapp.servicies.client.ClientsServicies;
+import ro.dascaliucadi.springapp.servicies.extra_charges.Extra_ChargesServicies;
 import ro.dascaliucadi.springapp.servicies.simulation_history.SmsServicies;
+import ro.dascaliucadi.springapp.simulation_history.CDR;
 import ro.dascaliucadi.springapp.simulation_history.SmsHistory;
+import ro.dascaliucadi.springapp.subscription.Subscriptions;
 
 @Controller
 public class SmsController {
@@ -26,10 +31,14 @@ public class SmsController {
 
 	@Autowired
 	private final SmsServicies smsServicies;
+	
+	@Autowired
+	private final Extra_ChargesServicies extra_chargesServicies;
 
-	public SmsController(ClientsServicies clientServicies, SmsServicies smsServicies) {
+	public SmsController(ClientsServicies clientServicies, SmsServicies smsServicies, Extra_ChargesServicies extra_chargesServicies) {
 		this.clientServicies = clientServicies;
 		this.smsServicies = smsServicies;
+		this.extra_chargesServicies = extra_chargesServicies;
 	}
 
 	@GetMapping("/simulate/message")
@@ -43,7 +52,7 @@ public class SmsController {
 	}
 
 	@PostMapping("/simulate/message")
-	public String messageResponse(@ModelAttribute("client") Clients client) {
+	public String messageResponse(@ModelAttribute("client") Clients client, Model model) {
 
 		addSms = client.getSmsHistory().getNrOfSms();
 		
@@ -75,9 +84,83 @@ public class SmsController {
 
 		smsServicies.addSms(clientOneSms, clientTwoSms.getPhone(), clientOneSms.getSmsHistory().getDateSmsSent(),
 				smsClientCurrent.getNrOfSms() + addSms, clientOneSms.getSmsHistory().getSmsType());
+	
+		Clients clientCurrentSms = clientServicies.findClientByID(clientOneSms.getID());
 		
-		clientServicies.updateClient(clientOneSms);
+		int totalSmsInNetworkClientCurrent = 0;
+		try {
+			totalSmsInNetworkClientCurrent = smsServicies.getTotalSentSmsByCliendIdAndSmsType(clientCurrentSms,
+					String.valueOf(Sms.in_network));
+		} catch (Exception e) {
 
+		}
+
+		int totalSmsOutsideNetworkClientCurrent = 0;
+		try {
+			totalSmsOutsideNetworkClientCurrent = smsServicies.getTotalSentSmsByCliendIdAndSmsType(clientCurrentSms,
+					String.valueOf(Sms.outside_network));
+		} catch (Exception e) {
+
+		}
+		
+		double smsRemaining = 0;
+		try {
+			smsRemaining = clientCurrentSms.getSubscription().getSMSIncluded() - totalSmsInNetworkClientCurrent;
+
+		} catch (Exception e) {
+			smsRemaining += clientCurrentSms.getSubscription().getSMSIncluded();
+		}
+
+		double networkSmsRemaining = 0;
+		try {
+			networkSmsRemaining = clientCurrentSms.getSubscription().getNetworkSMSIncluded()
+					- totalSmsOutsideNetworkClientCurrent;
+
+		} catch (Exception e) {
+			networkSmsRemaining = clientCurrentSms.getSubscription().getNetworkSMSIncluded();
+		}
+		
+		
+		Subscriptions detailSub = new Subscriptions(
+				SubscriptionsEnum.valueOf(clientCurrentSms.getSubscriptionType() == 1 ? "Standard" : "Premium"));
+		
+		if (smsRemaining > detailSub.getSMSIncluded()) {
+			clientCurrentSms.getExtra_charges().setSMS(smsRemaining - detailSub.getSMSIncluded());
+		}
+		
+		if (networkSmsRemaining > detailSub.getNetworkSMSIncluded()) {
+			clientCurrentSms.getExtra_charges().setNetworkSMS(networkSmsRemaining - detailSub.getNetworkSMSIncluded());
+		}
+		
+		Extra_Charges extra_chargesClientCurrent = 
+				extra_chargesServicies.getExtraChargesForClientByClientId(clientCurrentSms.getID());
+		
+		double call = 0;
+		try {
+			call = extra_chargesClientCurrent.getCall();
+		} catch (Exception e) { }
+		
+		double networkCall = 0;
+		try {
+			networkCall = extra_chargesClientCurrent.getNetworkCall();
+		} catch (Exception e) { }
+		
+		double internetTraffic = 0;
+		try {
+			internetTraffic = extra_chargesClientCurrent.getInternetTraffic();
+		} catch (Exception e) { }
+		
+		CDR cdr = new CDR();
+		
+		extra_chargesServicies.updateExtra_Charges(
+				clientCurrentSms.getID(),	
+				clientCurrentSms,
+				call / cdr.getPerCallMinute(),
+				smsRemaining < 0 ? Math.abs(smsRemaining) : 0,
+				networkCall / cdr.getPerNetworkCallMinute(),
+				networkSmsRemaining < 0 ? Math.abs(networkSmsRemaining) : 0,
+				internetTraffic / cdr.getPerMbInternetTraffic());
+		
 		return "homepage";
 	}
 

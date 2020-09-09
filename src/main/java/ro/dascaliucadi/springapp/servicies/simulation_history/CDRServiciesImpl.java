@@ -2,20 +2,20 @@ package ro.dascaliucadi.springapp.servicies.simulation_history;
 
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.stereotype.Service;
 
 import ro.dascaliucadi.springapp.simulation_history.CDR;
 import ro.dascaliucadi.springapp.simulation_history.CDRRepository;
 
 @Service
+@Configurable
 public class CDRServiciesImpl implements CDRServicies {
 	
-	public final CDRRepository cdrRepository;
-	
-	public CDRServiciesImpl(CDRRepository cdrRepository) {
-		this.cdrRepository = cdrRepository;
-		// TODO Auto-generated constructor stub
-	}
+	@Autowired
+	public CDRRepository cdrRepository;
+
 	
 	@Override
 	public List<CDR> getAllCdrs() {

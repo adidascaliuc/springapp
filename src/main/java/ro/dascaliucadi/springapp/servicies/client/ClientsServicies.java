@@ -2,8 +2,11 @@ package ro.dascaliucadi.springapp.servicies.client;
 
 import java.util.List;
 
+import org.springframework.stereotype.Service;
+
 import ro.dascaliucadi.springapp.clients.Clients;
 
+@Service
 public interface ClientsServicies {
 
 	Clients findClientByID(int id);

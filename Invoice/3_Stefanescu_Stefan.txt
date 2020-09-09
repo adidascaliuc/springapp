@@ -1,0 +1,9 @@
+ID: 3
+Name: Stefanescu Stefan
+Address: Brasov
+Balance: 34.56
+Phone: 0216983574
+Subscription Type: Premium
+Extra Charges Type: Standard
+
+Extra Charges: 

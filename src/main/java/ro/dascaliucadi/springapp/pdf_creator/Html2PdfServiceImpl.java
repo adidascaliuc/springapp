@@ -5,6 +5,7 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.util.Map;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.stereotype.Service;
 import org.thymeleaf.TemplateEngine;
@@ -20,12 +21,8 @@ import lombok.extern.java.Log;
 @Log
 public class Html2PdfServiceImpl implements Html2PdfService {
 
-	private final TemplateEngine templateEngine;
-
-	public Html2PdfServiceImpl(TemplateEngine templateEngine) {
-		this.templateEngine = templateEngine;
-		// TODO Auto-generated constructor stub
-	}
+	@Autowired
+	private TemplateEngine templateEngine;
 	
 	@Override
 	public InputStreamResource generateInvoice(Map<String, Object> data) {

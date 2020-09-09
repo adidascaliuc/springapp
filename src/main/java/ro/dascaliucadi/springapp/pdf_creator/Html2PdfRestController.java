@@ -27,13 +27,10 @@ import ro.dascaliucadi.springapp.subscription.Subscriptions;
 @RequiredArgsConstructor
 public class Html2PdfRestController {
 
-	private final Html2PdfService pdfService;
+	@Autowired
+	private Html2PdfServiceImpl pdfService;
 	private Subscriptions sub;
 
-	public Html2PdfRestController(Html2PdfService pdfService) {
-		this.pdfService = pdfService;
-		// TODO Auto-generated constructor stub
-	}
 
 	@Autowired
 	private ClientsServicies clientServicies;

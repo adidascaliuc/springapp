@@ -7,20 +7,26 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.stereotype.Service;
 
 import ro.dascaliucadi.springapp.clients.Clients;
+import ro.dascaliucadi.springapp.enumerari.MonthInvoiceEnum;
+import ro.dascaliucadi.springapp.simulation_history.CallsHistory;
+import ro.dascaliucadi.springapp.simulation_history.NetworkHistory;
 import ro.dascaliucadi.springapp.simulation_history.SmsHistory;
 import ro.dascaliucadi.springapp.simulation_history.SmsRepository;
 
 @Service
+@Configurable
 public class SmsServiciesImpl implements SmsServicies {
 
-	private final SmsRepository smsRepository;
+	@Autowired
+	private SmsRepository smsRepository;
 
-	public SmsServiciesImpl(SmsRepository smsRepository) {
-		this.smsRepository = smsRepository;
-	}
+	private Date firstDate = null;
+	private Date secondDate = null;
 
 	@Override
 	public void addSms(Clients client, String receiveSms, String dateMessageSent, int nrOfSms, String smsType) {
@@ -70,56 +76,52 @@ public class SmsServiciesImpl implements SmsServicies {
 
 		return sms;
 	}
-	
-	@SuppressWarnings("deprecation")
+
 	@Override
 	public List<SmsHistory> getSmsByClientIdAndCurrentDate(int clientId) {
 		List<SmsHistory> smss = new ArrayList<SmsHistory>();
-		SimpleDateFormat formatter= new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
-		
-		Date firstDate = null;
+		SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
+
 		try {
-			firstDate = formatter.parse( new SimpleDateFormat("dd-MM-yyyy HH:mm:ss").format(Calendar.getInstance().getTime()) );
-		} catch (ParseException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		Date secondDate = null;
-		try {
-			secondDate = formatter.parse( new SimpleDateFormat("dd-MM-yyyy HH:mm:ss").format(Calendar.getInstance().getTime()) );
+			firstDate = formatter
+					.parse(new SimpleDateFormat("dd-MM-yyyy HH:mm:ss").format(Calendar.getInstance().getTime()));
 		} catch (ParseException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 
-		
+		try {
+			secondDate = formatter
+					.parse(new SimpleDateFormat("dd-MM-yyyy HH:mm:ss").format(Calendar.getInstance().getTime()));
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
 		firstDate.setDate(1);
-		System.out.println("Here is firstDate: " + firstDate);
 		secondDate.setDate(1);
 		secondDate.setMonth(Calendar.getInstance().get(Calendar.MONTH) + 1);
-		System.out.println("Here is secondDate: " + secondDate);
-		
-		for(SmsHistory sms : smsRepository.findAll()) {
+
+		for (SmsHistory sms : smsRepository.findAll()) {
 			try {
-				if(sms.getClientId() == clientId &&
-						new SimpleDateFormat("dd-MM-yyyy HH:mm:ss").parse(sms.getDateSmsSent()).after(firstDate)
+				if (sms.getClientId() == clientId
+						&& new SimpleDateFormat("dd-MM-yyyy HH:mm:ss").parse(sms.getDateSmsSent()).after(firstDate)
 						&& new SimpleDateFormat("dd-MM-yyyy HH:mm:ss").parse(sms.getDateSmsSent()).before(secondDate)) {
 					smss.add(sms);
 				}
 			} catch (ParseException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}
-		
+
 		return smss;
 	}
-	
+
 	@Override
 	public int getTotalSentSmsByCliendIdAndSmsType(Clients client, String smsType) {
 		int totalSms = 0;
-		for(SmsHistory sms : smsRepository.findAll()) {
-			if(sms.getClientId() == client.getID() && sms.getSmsType().equals(smsType)) {
+		for (SmsHistory sms : smsRepository.findAll()) {
+			if (sms.getClientId() == client.getID() && sms.getSmsType().equals(smsType)) {
 				totalSms += sms.getNrOfSms();
 			}
 		}

@@ -3,6 +3,8 @@ package ro.dascaliucadi.springapp.servicies.client;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.stereotype.Service;
 
 import ro.dascaliucadi.springapp.clients.Clients;
@@ -11,17 +13,15 @@ import ro.dascaliucadi.springapp.extra_charges.Extra_Charges;
 import ro.dascaliucadi.springapp.extra_charges.Extra_ChargesRepository;
 
 @Service
+@Configurable
 public class ClientsServiciesImpl implements ClientsServicies {
-
-	private final ClientsRepository clientRepository;
-	private final Extra_ChargesRepository extra_chargesRepository;
-	private Extra_Charges e;
-
-	public ClientsServiciesImpl(ClientsRepository clientRepository, Extra_ChargesRepository extra_chargesRepository) {
-		this.clientRepository = clientRepository;
-		this.extra_chargesRepository = extra_chargesRepository;
-
-	}
+	
+	@Autowired
+	private  ClientsRepository clientRepository;
+	
+	@Autowired
+	private  Extra_ChargesRepository extra_chargesRepository;
+	
 
 	@Override
 	public Clients findClientByID(int ID) {
@@ -41,14 +41,16 @@ public class ClientsServiciesImpl implements ClientsServicies {
 
 	@Override
 	public Clients addClient(Clients newClient) {
-		e = null;
-		
-		newClient.setSubscriptionType(1);
-		clientRepository.save(newClient);
+		Extra_Charges e;
+		newClient.setSubscriptionType(newClient.getSubscriptionType());
 		
 		e = new Extra_Charges();
-		e.setExtra_ChargesType(1);
+		e.setExtra_ChargesType(newClient.getExtraChargesType());
 		e.setClientId(newClient.getID());
+		
+		newClient.setExtraChargesType(1);
+		
+		clientRepository.save(newClient);
 		extra_chargesRepository.save(e);
 		
 		return newClient;

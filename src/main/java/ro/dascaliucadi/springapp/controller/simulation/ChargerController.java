@@ -12,7 +12,6 @@ import ro.dascaliucadi.springapp.enumerari.Call;
 import ro.dascaliucadi.springapp.enumerari.Sms;
 import ro.dascaliucadi.springapp.enumerari.SubscriptionsEnum;
 import ro.dascaliucadi.springapp.servicies.client.ClientsServicies;
-import ro.dascaliucadi.springapp.servicies.extra_charges.Extra_ChargesServicies;
 import ro.dascaliucadi.springapp.servicies.simulation_history.CallsServicies;
 import ro.dascaliucadi.springapp.servicies.simulation_history.NetworkServicies;
 import ro.dascaliucadi.springapp.servicies.simulation_history.SmsServicies;
@@ -32,9 +31,6 @@ public class ChargerController {
 
 	@Autowired
 	private final NetworkServicies networkServicies;
-
-	@Autowired
-	private Extra_ChargesServicies extra_chargesServicies;
 
 	private Subscriptions detailSub;
 
@@ -58,45 +54,6 @@ public class ChargerController {
 		detailSub = new Subscriptions(
 				SubscriptionsEnum.valueOf(client.getSubscriptionType() == 1 ? "Standard" : "Premium"));
 
-		long totalMinutesInNetworkClientCurrent = 0;
-		try {
-			totalMinutesInNetworkClientCurrent = callsServicies.getTotalMinuteByClientIdAndCallType(client,
-					String.valueOf(Call.in_network));
-		} catch (Exception e) {
-
-		}
-
-		long totalMinutesOutsideNetworkClientCurrent = 0;
-		try {
-			totalMinutesOutsideNetworkClientCurrent = callsServicies.getTotalMinuteByClientIdAndCallType(client,
-					String.valueOf(Call.outside_network));
-		} catch (Exception e) {
-
-		}
-
-		int totalSmsInNetworkClientCurrent = 0;
-		try {
-			totalSmsInNetworkClientCurrent = smsServicies.getTotalSentSmsByCliendIdAndSmsType(client,
-					String.valueOf(Sms.in_network));
-		} catch (Exception e) {
-
-		}
-
-		int totalSmsOutsideNetworkClientCurrent = 0;
-		try {
-			totalSmsOutsideNetworkClientCurrent = smsServicies.getTotalSentSmsByCliendIdAndSmsType(client,
-					String.valueOf(Sms.outside_network));
-		} catch (Exception e) {
-
-		}
-
-		long totalMbClientCurrent = 0;
-		try {
-			totalMbClientCurrent = networkServicies.getTotalMbByClient(client);
-		} catch (Exception e) {
-
-		}
-
 		double callMinutes = 0;
 		double smsRemaining = 0;
 		double networkMinutesRemaining = 0;
@@ -105,7 +62,8 @@ public class ChargerController {
 		double subscriptionPay = client.getSubscription().getMonthlyCost();
 
 		try {
-			callMinutes = client.getSubscription().getMinutesIncluded() - totalMinutesInNetworkClientCurrent;
+			callMinutes = client.getSubscription().getMinutesIncluded() - 
+					callsServicies.getTotalMinuteByClientIdAndCallType(client, String.valueOf(Call.in_network));
 
 		} catch (Exception e) {
 			callMinutes += client.getSubscription().getMinutesIncluded();
@@ -113,14 +71,15 @@ public class ChargerController {
 
 		try {
 			networkMinutesRemaining = client.getSubscription().getNetworkMinutesIncluded()
-					- totalMinutesOutsideNetworkClientCurrent;
+					- callsServicies.getTotalMinuteByClientIdAndCallType(client, String.valueOf(Call.outside_network));;
 
 		} catch (Exception e) {
 			networkMinutesRemaining = client.getSubscription().getNetworkMinutesIncluded();
 		}
 
 		try {
-			smsRemaining = client.getSubscription().getSMSIncluded() - totalSmsInNetworkClientCurrent;
+			smsRemaining = client.getSubscription().getSMSIncluded() 
+					- smsServicies.getTotalSentSmsByCliendIdAndSmsType(client, String.valueOf(Sms.in_network));
 
 		} catch (Exception e) {
 			smsRemaining += client.getSubscription().getSMSIncluded();
@@ -128,14 +87,15 @@ public class ChargerController {
 
 		try {
 			networkSmsRemaining = client.getSubscription().getNetworkSMSIncluded()
-					- totalSmsOutsideNetworkClientCurrent;
+					- smsServicies.getTotalSentSmsByCliendIdAndSmsType(client, String.valueOf(Sms.outside_network));;
 
 		} catch (Exception e) {
 			networkSmsRemaining = client.getSubscription().getNetworkSMSIncluded();
 		}
 
 		try {
-			trafficRemaining = client.getSubscription().getTrafficIncluded() - totalMbClientCurrent;
+			trafficRemaining = client.getSubscription().getTrafficIncluded() 
+					- networkServicies.getTotalMbByClient(client);
 
 		} catch (Exception e) {
 			trafficRemaining = client.getSubscription().getTrafficIncluded();
@@ -161,13 +121,6 @@ public class ChargerController {
 		if (trafficRemaining > detailSub.getTrafficIncluded()) {
 			client.getExtra_charges().setInternetTraffic(trafficRemaining - detailSub.getTrafficIncluded());
 		}
-
-		
-		extra_chargesServicies.updateExtra_Charges(client, callMinutes < 0 ? Math.abs(callMinutes) : 0,
-				smsRemaining < 0 ? Math.abs(smsRemaining) : 0,
-				networkMinutesRemaining < 0 ? Math.abs(networkMinutesRemaining) : 0,
-				networkSmsRemaining < 0 ? Math.abs(networkSmsRemaining) : 0,
-				trafficRemaining < 0 ? Math.abs(trafficRemaining) : 0);
 
 		model.addAttribute("callMinutes", callMinutes);
 		model.addAttribute("smsRemaining", smsRemaining);

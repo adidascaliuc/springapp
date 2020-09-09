@@ -42,11 +42,7 @@ public class FirstSpringRestController {
 	private MyUserDetailsService userDetailsService;
 	
 	@Autowired
-	private final ClientsServicies clientServicies;
-
-	public FirstSpringRestController(ClientsServicies clientServicies) {
-		this.clientServicies = clientServicies;
-	}
+	private  ClientsServicies clientServicies;
 	
 	@RequestMapping(value = "/authenticate", method = RequestMethod.POST)
 	public ResponseEntity<?> createAuthenticationToken(@RequestBody AuthenticationRequest authenticationRequest) throws Exception {

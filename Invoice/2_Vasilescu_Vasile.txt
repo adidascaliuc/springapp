@@ -1,0 +1,9 @@
+ID: 2
+Name: Vasilescu Vasile
+Address: Cluj
+Balance: 777.77
+Phone: 0213698574
+Subscription Type: Standard
+Extra Charges Type: Standard
+
+Extra Charges: 

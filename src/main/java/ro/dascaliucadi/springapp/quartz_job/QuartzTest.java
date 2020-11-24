@@ -72,5 +72,7 @@ public class QuartzTest extends QuartzJobBean {
 		}
 
 		System.out.println("Generated invoice at: " + new Date());
+		
+		
 	}
 }

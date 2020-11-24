@@ -7,3 +7,8 @@ Subscription Type: Premium
 Extra Charges Type: Standard
 
 Extra Charges: 
+	Call: 200.0 $
+	Network Call: 0.0 $
+	Sms: 0.0 $
+	Network Sms: 0.0 $
+	nternet Traffic: 0.0 $

@@ -61,10 +61,10 @@ public class Extra_ChargesServiciesIml implements Extra_ChargesServicies {
 		}
 
 		firstDate.setDate(1);
-		firstDate.setMonth(Calendar.getInstance().get(Calendar.MONTH) - 1);
+		firstDate.setMonth(Calendar.getInstance().get(Calendar.MONTH));
 
 		secondDate.setDate(1);
-		secondDate.setMonth(Calendar.getInstance().get(Calendar.MONTH));
+		secondDate.setMonth(Calendar.getInstance().get(Calendar.MONTH) + 1);
 
 		for (Extra_Charges extra : extra_chargesRepository.findAll()) {
 			try {
